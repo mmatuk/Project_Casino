@@ -1,3 +1,6 @@
+
+import javax.swing.JFrame;
+
 //***********************************************************
 // 	Start.java								Team 2 
 //	Matt Matuk, Wyatt leith, Nick Tsang
@@ -14,28 +17,13 @@ public class Start
 {
 	public static void main(String[] args)
 	{
-            System.out.println("Testing.....");
-            System.out.println("testing");
-            System.out.println("Yess");
-            System.out.println("Testing.....");
-            System.out.println("testing");
-            System.out.println("Yess");
-            System.out.println("Testing.....");
-            System.out.println("testing");
-            System.out.println("Yess");
-            System.out.println("Testing.....");
-            System.out.println("testing");
-            System.out.println("Yess");
-            System.out.println("Testing.....");
-            System.out.println("testing");
-            System.out.println("Yess");            
-            System.out.println("Testing.....");
-            System.out.println("testing");
-            System.out.println("Yess");
-            System.out.println("Testing.....");
-            System.out.println("testing");
-            System.out.println("Yess");
 
+            JFrame frm = new JFrame("Project Casino");
+            frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);            
+            frm.setContentPane(new LoginPanel());
+            frm.pack();
+            frm.setLocationRelativeTo(null);
+            frm.setVisible(true);
 
 	}
 
