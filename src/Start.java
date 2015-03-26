@@ -20,7 +20,8 @@ public class Start
 
             JFrame frm = new JFrame("Project Casino");
             frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);            
-            frm.setContentPane(new LoginPanel());
+           // frm.setContentPane(new LoginPanel());
+            frm.setContentPane(new MainPanel());
             frm.pack();
             frm.setLocationRelativeTo(null);
             frm.setVisible(true);

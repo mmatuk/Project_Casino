@@ -53,7 +53,6 @@ public class LoginPanel extends javax.swing.JPanel
 
         txtFieldUsername.setMinimumSize(new java.awt.Dimension(100, 20));
         txtFieldUsername.setName(""); // NOI18N
-        txtFieldUsername.setPreferredSize(new java.awt.Dimension(100, 20));
         txtFieldUsername.setText("Username");
         txtFieldUsername.setSelectionEnd(-1);
         txtFieldUsername.addActionListener(new java.awt.event.ActionListener()
@@ -72,7 +71,6 @@ public class LoginPanel extends javax.swing.JPanel
         jPanel2.add(lblPassword);
 
         txtFieldPassword.setMinimumSize(new java.awt.Dimension(100, 20));
-        txtFieldPassword.setPreferredSize(new java.awt.Dimension(100, 20));
         txtFieldPassword.setText("Password");
         txtFieldPassword.addActionListener(new java.awt.event.ActionListener()
         {
@@ -84,6 +82,13 @@ public class LoginPanel extends javax.swing.JPanel
         jPanel2.add(txtFieldPassword);
 
         btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnLoginActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnLogin);
 
         btnCreateNewAccount.setText("Create New Account");
@@ -129,6 +134,12 @@ public class LoginPanel extends javax.swing.JPanel
     {//GEN-HEADEREND:event_txtFieldUsernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFieldUsernameActionPerformed
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnLoginActionPerformed
+    {//GEN-HEADEREND:event_btnLoginActionPerformed
+
+        
+    }//GEN-LAST:event_btnLoginActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
