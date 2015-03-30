@@ -1,3 +1,6 @@
+
+import java.awt.List;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,12 +14,24 @@
 public class MainPanel extends javax.swing.JPanel
 {
 
+    private final String RAISE = "RAISE";
+    private final String LOWER = "LOWER";
+    private final int RASISE_INT = 0; // for the combo box 
+    private final int LOWER_INT = 1; // for the combo box
+    
+    private List betNumber;
+    private double bankAccount;
+    private double betAmount;
+    private double PreBetAmount;
+    private List preBetNumbers;
+    
     /**
      * Creates new form MainPanel
      */
     public MainPanel()
     {
         initComponents();
+        setComponetValues();
     }
 
     /**
@@ -36,23 +51,28 @@ public class MainPanel extends javax.swing.JPanel
         btnAddMoney = new javax.swing.JButton();
         jPanelBetting = new javax.swing.JPanel();
         lblAmountBet = new javax.swing.JLabel();
-        jComboBoxRL = new javax.swing.JComboBox();
+        comboRasieLow = new javax.swing.JComboBox();
         lblCurrentBet = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         lblSetBet = new javax.swing.JLabel();
         txtFieldBet = new java.awt.TextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnBet10 = new javax.swing.JButton();
+        btnBet25 = new javax.swing.JButton();
+        btnBet1 = new javax.swing.JButton();
+        btnBet5 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jTabbedPaneGames = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanelGameBoard = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        lblTest = new javax.swing.JLabel();
+        txtFieldTest = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jPanelResults = new javax.swing.JPanel();
-        jButton7 = new javax.swing.JButton();
+        lblResults = new javax.swing.JLabel();
+        lblResultsText = new javax.swing.JLabel();
+        btnPlay = new javax.swing.JButton();
 
         jPanelUserInfo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
@@ -92,15 +112,11 @@ public class MainPanel extends javax.swing.JPanel
             .addGroup(jPanelUserInfoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblUserName)
-                .addGroup(jPanelUserInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelUserInfoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanelUserInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblBankBal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelUserInfoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAddMoney)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelUserInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblBankBal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAddMoney, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -108,8 +124,8 @@ public class MainPanel extends javax.swing.JPanel
 
         lblAmountBet.setText("Amount Betting:");
 
-        jComboBoxRL.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBoxRL.setPreferredSize(new java.awt.Dimension(64, 25));
+        comboRasieLow.setModel(new javax.swing.DefaultComboBoxModel());
+        comboRasieLow.setPreferredSize(new java.awt.Dimension(64, 25));
 
         lblCurrentBet.setText("1000,000");
 
@@ -119,17 +135,24 @@ public class MainPanel extends javax.swing.JPanel
 
         txtFieldBet.setText("Bet Amount");
 
-        jButton1.setText("jButton1");
+        btnBet10.setText("$10");
 
-        jButton2.setText("jButton2");
+        btnBet25.setText("$25");
 
-        jButton3.setText("jButton3");
+        btnBet1.setText("$1");
+        btnBet1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnBet1ActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("jButton4");
+        btnBet5.setText("$5");
 
-        jButton5.setText("jButton5");
+        jButton5.setText("$100");
 
-        jButton6.setText("jButton6");
+        jButton6.setText("$50");
 
         javax.swing.GroupLayout jPanelBettingLayout = new javax.swing.GroupLayout(jPanelBetting);
         jPanelBetting.setLayout(jPanelBettingLayout);
@@ -142,26 +165,26 @@ public class MainPanel extends javax.swing.JPanel
                         .addComponent(lblAmountBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblCurrentBet))
-                    .addComponent(jComboBoxRL, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(comboRasieLow, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBet10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblSetBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                    .addComponent(btnBet25, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
                     .addComponent(txtFieldBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3)
-                    .addComponent(jButton6))
+                .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnBet1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnBet5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanelBettingLayout.setVerticalGroup(
             jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,27 +200,59 @@ public class MainPanel extends javax.swing.JPanel
                                 .addComponent(lblCurrentBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(lblAmountBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton3)
-                                .addComponent(jButton4)))
+                                .addComponent(btnBet1)
+                                .addComponent(btnBet5)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton5)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBoxRL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton6))))
+                        .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnBet10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnBet25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButton5)
+                                .addComponent(comboRasieLow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton6)))))
                 .addContainerGap())
+        );
+
+        lblTest.setText("Test:");
+
+        txtFieldTest.setText("Enter bet test");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTest)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtFieldTest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(495, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTest)
+                    .addComponent(txtFieldTest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(532, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelGameBoardLayout = new javax.swing.GroupLayout(jPanelGameBoard);
         jPanelGameBoard.setLayout(jPanelGameBoardLayout);
         jPanelGameBoardLayout.setHorizontalGroup(
             jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1178, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGameBoardLayout.createSequentialGroup()
+                .addContainerGap(534, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanelGameBoardLayout.setVerticalGroup(
             jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 593, Short.MAX_VALUE)
+            .addGroup(jPanelGameBoardLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -235,18 +290,32 @@ public class MainPanel extends javax.swing.JPanel
         jPanelResults.setBackground(new java.awt.Color(204, 204, 204));
         jPanelResults.setPreferredSize(new java.awt.Dimension(1087, 50));
 
+        lblResults.setText("Results:");
+
+        lblResultsText.setText("Number Bet 25 Number rolled 25 Amount won $100");
+
         javax.swing.GroupLayout jPanelResultsLayout = new javax.swing.GroupLayout(jPanelResults);
         jPanelResults.setLayout(jPanelResultsLayout);
         jPanelResultsLayout.setHorizontalGroup(
             jPanelResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1087, Short.MAX_VALUE)
+            .addGroup(jPanelResultsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblResults)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblResultsText)
+                .addContainerGap(726, Short.MAX_VALUE))
         );
         jPanelResultsLayout.setVerticalGroup(
             jPanelResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
+            .addGroup(jPanelResultsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblResults)
+                    .addComponent(lblResultsText))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
-        jButton7.setText("jButton7");
+        btnPlay.setText("PLAY");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -264,7 +333,7 @@ public class MainPanel extends javax.swing.JPanel
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanelResults, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(btnPlay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -278,31 +347,44 @@ public class MainPanel extends javax.swing.JPanel
                 .addComponent(jTabbedPaneGames, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelResults, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnPlay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jPanelResults, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void setComponetValues()
+    {
+        comboRasieLow.addItem(RAISE);
+        comboRasieLow.addItem(LOWER);
+    }
     private void btnAddMoneyActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddMoneyActionPerformed
     {//GEN-HEADEREND:event_btnAddMoneyActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAddMoneyActionPerformed
 
+    private void btnBet1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBet1ActionPerformed
+    {//GEN-HEADEREND:event_btnBet1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBet1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddMoney;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnBet1;
+    private javax.swing.JButton btnBet10;
+    private javax.swing.JButton btnBet25;
+    private javax.swing.JButton btnBet5;
+    private javax.swing.JButton btnPlay;
+    private javax.swing.JComboBox comboRasieLow;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox jComboBoxRL;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanelBetting;
     private javax.swing.JPanel jPanelGameBoard;
     private javax.swing.JPanel jPanelResults;
@@ -312,8 +394,12 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JLabel lblAmountBet;
     private javax.swing.JLabel lblBankBal;
     private javax.swing.JLabel lblCurrentBet;
+    private javax.swing.JLabel lblResults;
+    private javax.swing.JLabel lblResultsText;
     private javax.swing.JLabel lblSetBet;
+    private javax.swing.JLabel lblTest;
     private javax.swing.JLabel lblUserName;
     private java.awt.TextField txtFieldBet;
+    private javax.swing.JTextField txtFieldTest;
     // End of variables declaration//GEN-END:variables
 }
