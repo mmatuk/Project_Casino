@@ -1,5 +1,7 @@
 
 import java.awt.List;
+import java.io.File;
+import javax.swing.ImageIcon;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,6 +27,10 @@ public class MainPanel extends javax.swing.JPanel
     private double PreBetAmount;
     private List preBetNumbers;
     
+    //*********test
+    private RouletteButton test;
+    //**************
+    
     /**
      * Creates new form MainPanel
      */
@@ -32,6 +38,9 @@ public class MainPanel extends javax.swing.JPanel
     {
         initComponents();
         setComponetValues();
+        
+        //*****test******
+         test();
     }
 
     /**
@@ -68,11 +77,15 @@ public class MainPanel extends javax.swing.JPanel
         jPanel3 = new javax.swing.JPanel();
         lblTest = new javax.swing.JLabel();
         txtFieldTest = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanelResults = new javax.swing.JPanel();
         lblResults = new javax.swing.JLabel();
         lblResultsText = new javax.swing.JLabel();
         btnPlay = new javax.swing.JButton();
+
+        setPreferredSize(new java.awt.Dimension(1400, 829));
 
         jPanelUserInfo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
@@ -217,6 +230,14 @@ public class MainPanel extends javax.swing.JPanel
 
         txtFieldTest.setText("Enter bet test");
 
+        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.LINE_AXIS));
+
+        jButton1.setText("jButton1");
+        jButton1.setMaximumSize(new java.awt.Dimension(60, 80));
+        jButton1.setMinimumSize(new java.awt.Dimension(60, 80));
+        jButton1.setPreferredSize(new java.awt.Dimension(60, 80));
+        jPanel4.add(jButton1);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -226,7 +247,10 @@ public class MainPanel extends javax.swing.JPanel
                 .addComponent(lblTest)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtFieldTest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(495, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 581, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -235,7 +259,9 @@ public class MainPanel extends javax.swing.JPanel
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTest)
                     .addComponent(txtFieldTest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(532, Short.MAX_VALUE))
+                .addGap(136, 136, 136)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(186, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelGameBoardLayout = new javax.swing.GroupLayout(jPanelGameBoard);
@@ -243,14 +269,12 @@ public class MainPanel extends javax.swing.JPanel
         jPanelGameBoardLayout.setHorizontalGroup(
             jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGameBoardLayout.createSequentialGroup()
-                .addContainerGap(534, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(0, 469, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanelGameBoardLayout.setVerticalGroup(
             jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelGameBoardLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGameBoardLayout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -278,7 +302,7 @@ public class MainPanel extends javax.swing.JPanel
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1202, Short.MAX_VALUE)
+            .addGap(0, 1371, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -360,6 +384,20 @@ public class MainPanel extends javax.swing.JPanel
         comboRasieLow.addItem(RAISE);
         comboRasieLow.addItem(LOWER);
     }
+    //************************************************
+    private void test()
+    {
+        int[] temp = new int[] {3,6};
+        test = new RouletteButton(new ImageIcon(getClass().getResource("/images/btn_number_mouseover.png")), 
+                new ImageIcon(getClass().getResource("/images/btn_red_number_pressed.png")), 
+                        new ImageIcon(getClass().getResource("/images/btn_red_number_normal.png")), temp);
+        jPanel4.add(test);
+        RouletteButton test2 = new RouletteButton(new ImageIcon(getClass().getResource("/images/btn_number_mouseover.png")), 
+                new ImageIcon(getClass().getResource("/images/btn_red_number_pressed.png")), 
+                        new ImageIcon(getClass().getResource("/images/btn_red_number_normal.png")), temp);
+        jPanel4.add(test2);
+    }
+    //*************************************************
     private void btnAddMoneyActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddMoneyActionPerformed
     {//GEN-HEADEREND:event_btnAddMoneyActionPerformed
         // TODO add your handling code here:
@@ -379,12 +417,14 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JButton btnBet5;
     private javax.swing.JButton btnPlay;
     private javax.swing.JComboBox comboRasieLow;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanelBetting;
     private javax.swing.JPanel jPanelGameBoard;
     private javax.swing.JPanel jPanelResults;
