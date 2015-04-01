@@ -388,10 +388,6 @@ public class MainPanel extends javax.swing.JPanel
         RouletteButton test2 = new RouletteButton(new ImageIcon(getClass().getResource("/images/btn_number_mouseover.png")), 
                 new ImageIcon(getClass().getResource("/images/btn_red_number_pressed.png")), 
                         new ImageIcon(getClass().getResource("/images/btn_red_number_normal.png")), temp);
-        for (File file : images)
-        {
-            
-        }
         jPanel4.add(test2);
     }
     //*************************************************
