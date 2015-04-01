@@ -78,7 +78,6 @@ public class MainPanel extends javax.swing.JPanel
         lblTest = new javax.swing.JLabel();
         txtFieldTest = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanelResults = new javax.swing.JPanel();
         lblResults = new javax.swing.JLabel();
@@ -231,12 +230,6 @@ public class MainPanel extends javax.swing.JPanel
         txtFieldTest.setText("Enter bet test");
 
         jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.LINE_AXIS));
-
-        jButton1.setText("jButton1");
-        jButton1.setMaximumSize(new java.awt.Dimension(60, 80));
-        jButton1.setMinimumSize(new java.awt.Dimension(60, 80));
-        jButton1.setPreferredSize(new java.awt.Dimension(60, 80));
-        jPanel4.add(jButton1);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -395,6 +388,10 @@ public class MainPanel extends javax.swing.JPanel
         RouletteButton test2 = new RouletteButton(new ImageIcon(getClass().getResource("/images/btn_number_mouseover.png")), 
                 new ImageIcon(getClass().getResource("/images/btn_red_number_pressed.png")), 
                         new ImageIcon(getClass().getResource("/images/btn_red_number_normal.png")), temp);
+        for (File file : images)
+        {
+            
+        }
         jPanel4.add(test2);
     }
     //*************************************************
@@ -417,7 +414,6 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JButton btnBet5;
     private javax.swing.JButton btnPlay;
     private javax.swing.JComboBox comboRasieLow;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
