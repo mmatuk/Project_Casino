@@ -12,6 +12,9 @@
 //******************************************************************************
 
 import java.awt.Dimension;
+import java.io.File;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
@@ -21,20 +24,36 @@ import javax.swing.JButton;
  */
 public class RouletteButton extends JButton
 {
-    private int[] numbers;
+    private List<Integer> numbers;
     
-    public RouletteButton(ImageIcon mOver, ImageIcon press, 
-            ImageIcon nor, int[] num)
+    /**
+     * Create a new Roulette button
+     * 
+     * @param mOver Mouseover imageIcon
+     * @param press Pressed imageIcon
+     * @param nor Normal imageIcon
+     * @param num 
+     */
+    public RouletteButton(String mOver, String press, 
+            String nor, List<Integer> num)
     {
-        super(nor);
-        setPressedIcon(press);
-        setRolloverIcon(mOver);
+        super();
         numbers = num;
         setButton();
-        Dimension temp = new Dimension(nor.getIconWidth(), nor.getIconHeight());
+
+        ImageIcon normalIcon = new ImageIcon(getClass().getResource(nor));
+        ImageIcon pressedIcon = new ImageIcon(getClass().getResource(press));
+        ImageIcon mouseoverIcon = new ImageIcon(getClass().getResource(mOver));
+        
+        setPressedIcon(pressedIcon);
+        setRolloverIcon(mouseoverIcon);
+        setIcon(normalIcon);
+        
+        Dimension temp = new Dimension(pressedIcon.getIconWidth(), pressedIcon.getIconHeight());
         setPreferredSize(temp);
         setMinimumSize(temp);
         setMaximumSize(temp);
+        
     }
     
     private void setButton()
@@ -43,5 +62,10 @@ public class RouletteButton extends JButton
         setContentAreaFilled(false);
         setBorderPainted(false);
         setFocusPainted(false);
+    }
+    
+    public List<Integer> getNumbers()
+    {
+    	return numbers;
     }
 }

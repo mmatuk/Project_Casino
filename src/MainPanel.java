@@ -1,6 +1,9 @@
 
+import java.awt.Dimension;
 import java.awt.List;
 import java.io.File;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 
 /*
@@ -380,15 +383,18 @@ public class MainPanel extends javax.swing.JPanel
     //************************************************
     private void test()
     {
-        int[] temp = new int[] {3,6};
-        test = new RouletteButton(new ImageIcon(getClass().getResource("/images/btn_number_mouseover.png")), 
-                new ImageIcon(getClass().getResource("/images/btn_red_number_pressed.png")), 
-                        new ImageIcon(getClass().getResource("/images/btn_red_number_normal.png")), temp);
-        jPanel4.add(test);
-        RouletteButton test2 = new RouletteButton(new ImageIcon(getClass().getResource("/images/btn_number_mouseover.png")), 
-                new ImageIcon(getClass().getResource("/images/btn_red_number_pressed.png")), 
-                        new ImageIcon(getClass().getResource("/images/btn_red_number_normal.png")), temp);
-        jPanel4.add(test2);
+        ArrayList<Integer> temp = new ArrayList<Integer>(1);
+        test = new RouletteButton("/images/btn_number_mouseover.png", 
+                "/images/btn_red_number_pressed.png", 
+                        "/images/btn_red_number_normal.png", temp);
+        RouletteButton test2 = new RouletteButton("/images/btn_number_mouseover.png", 
+                "/images/btn_red_number_pressed.png", 
+                        "/images/btn_red_number_normal.png", temp);
+        
+        Roulette test = new Roulette("Roulette");
+        
+        jPanel4.add(test.getGamePanel());
+        jPanel4.setPreferredSize(new Dimension(900,200));
     }
     //*************************************************
     private void btnAddMoneyActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddMoneyActionPerformed
