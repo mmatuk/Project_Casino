@@ -104,49 +104,53 @@ public class Roulette extends Game
 		public JPanel makeGameBoard()
 		{
 			JPanel temp = new JPanel();
+                        temp.setLayout(new javax.swing.BoxLayout(temp, javax.swing.BoxLayout.Y_AXIS));
+                        
 			JPanel topRow = new JPanel();
 			topRow.setLayout(new javax.swing.BoxLayout(topRow, javax.swing.BoxLayout.X_AXIS));
+                        
+                        JPanel testRow = new JPanel();
+			testRow.setLayout(new javax.swing.BoxLayout(testRow, javax.swing.BoxLayout.X_AXIS));
 			
 			List<Integer> testNumbers = new ArrayList<Integer>(1);
 			testNumbers.add(1);
 			
 			RouletteButton[] topButtons = new RouletteButton[24];
-			int num = 0;
-			topButtons[num] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_normal.png", "/images/btn_red_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_black_number_normal.png", "/images/btn_black_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_normal.png", "/images/btn_red_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_black_number_normal.png", "/images/btn_black_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_normal.png", "/images/btn_red_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_black_number_normal.png", "/images/btn_black_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_normal.png", "/images/btn_red_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_black_number_normal.png", "/images/btn_black_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_normal.png", "/images/btn_red_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_black_number_normal.png", "/images/btn_black_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_normal.png", "/images/btn_red_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_black_number_normal.png", "/images/btn_black_number_normal.png", testNumbers );
-			topButtons[num++] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_black_number_normal.png", "/images/btn_black_number_normal.png", testNumbers );
+                        RouletteButton[] testButtons = new RouletteButton[24];
+
+                        topButtons[0] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
+                        topButtons[1] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_pressed.png", "/images/btn_red_number_normal.png", testNumbers );
+                        topButtons[2] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
+                        topButtons[3] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_pressed.png", "/images/btn_red_number_normal.png", testNumbers );
+                        topButtons[4] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
+                        topButtons[5] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_pressed.png", "/images/btn_red_number_normal.png", testNumbers );
+                        topButtons[6] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
+                        topButtons[7] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_pressed.png", "/images/btn_red_number_normal.png", testNumbers );
+
+                        testButtons[0] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
+                        testButtons[1] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_pressed.png", "/images/btn_red_number_normal.png", testNumbers );
+                        testButtons[2] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
+                        testButtons[3] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_pressed.png", "/images/btn_red_number_normal.png", testNumbers );
+                        testButtons[4] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
+                        testButtons[5] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_pressed.png", "/images/btn_red_number_normal.png", testNumbers );
+                        testButtons[6] = new RouletteButton("/images/btn_line_ver_number_mouseover.png", "/images/btn_line_ver_number_pressed.png", "/images/btn_line_ver_number_normal.png", testNumbers );
+                        testButtons[7] = new RouletteButton("/images/btn_number_mouseover.png", "/images/btn_red_number_pressed.png", "/images/btn_red_number_normal.png", testNumbers );
 
 			for (RouletteButton button : topButtons)
 			{
-				System.out.println(button.getNumbers().toString());
-			}
-			for (RouletteButton button : topButtons)
-			{
+                            if (button != null)
 				topRow.add(button);
+			}			
+                        
+                        for (RouletteButton button : testButtons)
+			{
+                            if (button != null)
+				testRow.add(button);
 			}
-			return topRow;
+                        temp.add(topRow);
+                        temp.add(testRow);
+                        
+			return temp;
 			
 		}
 	}
