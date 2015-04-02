@@ -11,12 +11,20 @@
 //  roulete buttons, will look like a roulette game board.
 //******************************************************************************
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Label;
+import java.awt.geom.AffineTransform;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.xml.soap.Text;
 
 /**
  *
@@ -24,7 +32,7 @@ import javax.swing.JButton;
  */
 public class RouletteButton extends JButton
 {
-    private List<Integer> numbers;
+    private int[] numbers;
     
     /**
      * Create a new Roulette button
@@ -32,13 +40,14 @@ public class RouletteButton extends JButton
      * @param mOver Mouseover imageIcon
      * @param press Pressed imageIcon
      * @param nor Normal imageIcon
-     * @param num 
+     * @param num Integers for the numbers that the button controls. 
+     * Make sure when passing the ints to keep them in numerical order.
      */
     public RouletteButton(String mOver, String press, 
-            String nor, List<Integer> num)
+            String nor, int...num)
     {
         super();
-        numbers = num;
+        setNumbers(num);
         setButton();
 
         ImageIcon normalIcon = new ImageIcon(getClass().getResource(nor));
@@ -54,6 +63,11 @@ public class RouletteButton extends JButton
         setMinimumSize(temp);
         setMaximumSize(temp);
         
+        if (numbers.length == 1)
+        {
+        	addNumberText();
+        }
+        
     }
     
     private void setButton()
@@ -64,8 +78,55 @@ public class RouletteButton extends JButton
         setFocusPainted(false);
     }
     
-    public List<Integer> getNumbers()
+    public int[] getNumbers()
     {
     	return numbers;
+    }
+    
+    public void setNumbers(int...num)
+    {
+    	numbers = num;
+    }
+    
+    private void addNumberText()
+    {
+    	setHorizontalTextPosition(JButton.CENTER);
+    	setVerticalTextPosition(JButton.CENTER);
+
+    	// for double 00 number
+    	if (numbers[0] == 37)
+    	{
+    		setText("00");
+
+    	}
+    	// adds space for any single digit numbers 
+    	// so text is in center when rotated
+    	else if (numbers[0] <= 9)
+    	{
+    		setText(" "+numbers[0]);
+    	}
+    	else
+    	{
+    		setText(""+numbers[0]);
+    	}
+    	
+    	Font tmp1 = new Font("", Font.PLAIN, 50);
+    	    	
+    	AffineTransform test = new AffineTransform();
+    	test.rotate(Math.toRadians(-90), tmp1.getSize()/2-2, tmp1.getSize()/9);
+
+    	setFont(tmp1.deriveFont(test));
+    	setForeground(Color.WHITE);
+    }
+    
+    public String toString()
+    {
+    	String temp = "";
+    	
+    	for (int num : numbers)
+    	{
+    		temp = temp + num +", ";
+    	}
+    	return "Button numbers: " +temp;
     }
 }

@@ -383,18 +383,10 @@ public class MainPanel extends javax.swing.JPanel
     //************************************************
     private void test()
     {
-        ArrayList<Integer> temp = new ArrayList<Integer>(1);
-        test = new RouletteButton("/images/btn_number_mouseover.png", 
-                "/images/btn_red_number_pressed.png", 
-                        "/images/btn_red_number_normal.png", temp);
-        RouletteButton test2 = new RouletteButton("/images/btn_number_mouseover.png", 
-                "/images/btn_red_number_pressed.png", 
-                        "/images/btn_red_number_normal.png", temp);
-        
-        Roulette test = new Roulette("Roulette");
-        
-        jPanel4.add(test.getGamePanel());
-        jPanel4.setPreferredSize(new Dimension(900,200));
+ 
+    	Roulette testGame = new Roulette("Roulette");
+    	
+        jPanel4.add(testGame.getGamePanel());
     }
     //*************************************************
     private void btnAddMoneyActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddMoneyActionPerformed
