@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.List;
 import java.io.File;
@@ -332,24 +333,10 @@ public class MainPanel extends javax.swing.JPanel
     //************************************************
     private void test()
     {
-<<<<<<< HEAD
- 
     	Roulette testGame = new Roulette("Roulette");
     	
-        jPanel4.add(testGame.getGamePanel());
-=======
-        ArrayList<Integer> temp = new ArrayList<Integer>(1);
-        test = new RouletteButton("/images/btn_number_mouseover.png", 
-                "/images/btn_red_number_pressed.png", 
-                        "/images/btn_red_number_normal.png", temp);
-        RouletteButton test2 = new RouletteButton("/images/btn_number_mouseover.png", 
-                "/images/btn_red_number_pressed.png", 
-                        "/images/btn_red_number_normal.png", temp);
-        
-        Roulette test = new Roulette("Roulette");
-        
-        jPanelGameBoard.add(test.getGamePanel());
->>>>>>> cbd9ed57f9f04046fbe3f997b8280550151dc02c
+        jPanelGameBoard.add(testGame.getGamePanel());
+        jPanelGameBoard.setBackground(Color.decode("#137c43"));
     }
     //*************************************************
     private void btnAddMoneyActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddMoneyActionPerformed

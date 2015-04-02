@@ -110,13 +110,40 @@ public class RouletteButton extends JButton
     		setText(""+numbers[0]);
     	}
     	
-    	Font tmp1 = new Font("", Font.PLAIN, 50);
+    	Font tmp1 = new Font("", Font.PLAIN, 45);
     	    	
     	AffineTransform test = new AffineTransform();
     	test.rotate(Math.toRadians(-90), tmp1.getSize()/2-2, tmp1.getSize()/9);
 
     	setFont(tmp1.deriveFont(test));
     	setForeground(Color.WHITE);
+    }
+    
+    public void addStringTextRotated(String txt, int size)
+    {
+    	setText(txt);
+    	
+    	setHorizontalTextPosition(JButton.CENTER);
+    	setVerticalTextPosition(JButton.CENTER);
+    	
+    	Font tmp1 = new Font(txt, Font.PLAIN, size);
+    	
+    	AffineTransform test = new AffineTransform();
+    	test.rotate(Math.toRadians(-90), tmp1.getSize()/2+5, tmp1.getSize()/2);
+
+    	setFont(tmp1.deriveFont(test));
+    	setForeground(Color.WHITE);
+    }
+    
+    public void addText(String str, int size)
+    {
+    	setText(str);
+    	Font tmp1 = new Font("", Font.PLAIN, size);
+    	setFont(tmp1);
+    	setForeground(Color.WHITE);
+    	
+    	setHorizontalTextPosition(JButton.CENTER);
+    	setVerticalTextPosition(JButton.CENTER);
     }
     
     public String toString()
