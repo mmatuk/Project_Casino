@@ -77,10 +77,6 @@ public class MainPanel extends javax.swing.JPanel
         jTabbedPaneGames = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanelGameBoard = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        lblTest = new javax.swing.JLabel();
-        txtFieldTest = new javax.swing.JTextField();
-        jPanel4 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanelResults = new javax.swing.JPanel();
         lblResults = new javax.swing.JLabel();
@@ -228,53 +224,6 @@ public class MainPanel extends javax.swing.JPanel
                 .addContainerGap())
         );
 
-        lblTest.setText("Test:");
-
-        txtFieldTest.setText("Enter bet test");
-
-        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.LINE_AXIS));
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTest)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtFieldTest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 581, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTest)
-                    .addComponent(txtFieldTest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(136, 136, 136)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(186, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanelGameBoardLayout = new javax.swing.GroupLayout(jPanelGameBoard);
-        jPanelGameBoard.setLayout(jPanelGameBoardLayout);
-        jPanelGameBoardLayout.setHorizontalGroup(
-            jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGameBoardLayout.createSequentialGroup()
-                .addGap(0, 469, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        jPanelGameBoardLayout.setVerticalGroup(
-            jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGameBoardLayout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -383,10 +332,24 @@ public class MainPanel extends javax.swing.JPanel
     //************************************************
     private void test()
     {
+<<<<<<< HEAD
  
     	Roulette testGame = new Roulette("Roulette");
     	
         jPanel4.add(testGame.getGamePanel());
+=======
+        ArrayList<Integer> temp = new ArrayList<Integer>(1);
+        test = new RouletteButton("/images/btn_number_mouseover.png", 
+                "/images/btn_red_number_pressed.png", 
+                        "/images/btn_red_number_normal.png", temp);
+        RouletteButton test2 = new RouletteButton("/images/btn_number_mouseover.png", 
+                "/images/btn_red_number_pressed.png", 
+                        "/images/btn_red_number_normal.png", temp);
+        
+        Roulette test = new Roulette("Roulette");
+        
+        jPanelGameBoard.add(test.getGamePanel());
+>>>>>>> cbd9ed57f9f04046fbe3f997b8280550151dc02c
     }
     //*************************************************
     private void btnAddMoneyActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddMoneyActionPerformed
@@ -413,8 +376,6 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanelBetting;
     private javax.swing.JPanel jPanelGameBoard;
     private javax.swing.JPanel jPanelResults;
@@ -427,9 +388,7 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JLabel lblResults;
     private javax.swing.JLabel lblResultsText;
     private javax.swing.JLabel lblSetBet;
-    private javax.swing.JLabel lblTest;
     private javax.swing.JLabel lblUserName;
     private java.awt.TextField txtFieldBet;
-    private javax.swing.JTextField txtFieldTest;
     // End of variables declaration//GEN-END:variables
 }
