@@ -10,22 +10,97 @@
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseListener;
+import java.util.Random;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class Roulette extends Game
 {
-	final private int[] redNum =
+	// int[] for any numbers that need words
+	private final static int[] RED_NUM =
 			{
-			1
+			1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36
 			};
-	final private int[] balckNum =
+	private static int[] BLACK_NUM =
 			{
-			0
+			2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35
+			};
+	private static int[] ODD_NUM =
+			{
+			1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35			
+			};
+	private static int[] EVEN_NUM =
+			{
+			2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36			
+			};
+	private static int[] LOW_NUM =
+			{
+			1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35		
+			};
+	private static int[] HIGH_NUM =
+			{
+			1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35		
+			};
+	private static int[] FIRST_TWELVE =
+			{
+			1,2,3,4,5,6,7,8,9,10,11,12		
+			};
+	private static int[] SECOND_TWELVE =
+			{
+			13,14,15,16,17,18,19,20,21,22,23,24			
+			};
+	private static int[] THIRD_TWELVE =
+			{
+			25,26,27,28,29,30,31,32,33,34,35,36			
+			};
+	private static int[] TWO_ONE_TOP =
+			{
+			3,6,9,12,15,18,21,24,27,30,33,36		
+			};
+	private static int[] TWO_ONE_TOP_MID =
+			{
+			2,3,4,6,8,6,11,12,14,15,17,18,20,21,23,24,26,27,29,30,32,33,35,36		
+			};
+	private static int[] TWO_ONE_MID =
+			{
+			2,5,8,11,14,17,20,23,26,29,32,35		
+			};
+	private static int[] TWO_ONE_MID_BOTTOM =
+			{
+			1,2,4,5,7,8,10,11,13,14,16,17,19,20,22,23,25,26,28,29,31,32,34,35		
+			};
+	private static int[] TWO_ONE_BOTTOM =
+			{
+			1,4,7,10,13,16,19,22,25,28,31,34			
+			};
+	private static int[] FIRST_HALF =
+			{
+			1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18			
+			};
+	private static int[] LAST_HALF =
+			{
+			19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36		
 			};
 	
+	private final static String TWO_TEXT = "2 to 1";
+	private final static String TWO_TOP_TEXT = "2 to 1 Top";
+	private final static String TWO_TOP_MID_TEXT = "2 to 1 Between Top and Middle";
+	private final static String TWO_MID_TEXT = "2 to 1 Middle";
+	private final static String TWO_MID_BOTTOM_TEXT = "2 to 1 Between Middle and Bottom";
+	private final static String TWO_BOTTOM_TEXT = "2 to 1 Bottom";
+	private final static String FIRST_TWELVE_TEXT = "1st 12";
+	private final static String SECOND_TWELVE_TEXT = "2nd 12";
+	private final static String THIRD_TWELVE_TEXT = "3rd 12";
+	private final static String EVEN_TEXT = "EVEN";		
+	private final static String FIRST_HALF_TEXT = "1 to 18";
+	private final static String SECOND_HALF_TEXT = "19 to 36";
+	private final static String ODD_TEXT = "ODD";
+	private final static String RED_TEXT = "RED";
+	private final static String BLACK_TEXT = "BLACK";
+	
 	private int resultNumber;
-	private int odds;
+	private double odds;
 	private int[] userPick;
 	
 	public Roulette(String name)
@@ -35,21 +110,229 @@ public class Roulette extends Game
 		resultNumber = 0;
 		odds = 0;
 		userPick = null;
-		
-		makePanel();
 	}
 	
-	public void playGame()
+
+	/**
+	 * Plays the game.
+	 * 
+	 * @return Returns the results as a string. null if no game was played.
+	 */
+	public String playGame()
 	{
 		if (ready())
 		{
+			odds = determineOdds();
+			resultNumber = new Random().nextInt(38);
+
+			String result = getResult(didUserWin());
+			resetGame();
 			
+			return result;
+		}
+		return null;
+	}
+	
+	/**
+	 * Makes the game panel and sets it to gamPanel.
+	 */
+	public JPanel makePanel()
+	{
+		return gamePanel = new RouletteGameBoard().makeGameBoard();
+	}
+	
+	/**
+	 * Sets the odds for the current game based off the size of 
+	 * the userPick array. 
+	 * 
+	 * @return The odds. -1 if no odds were found.
+	 */
+	private double determineOdds()
+	{
+		switch (userPick.length)
+		{
+		case 1:
+			return 35;
+		case 2:
+			return 17;
+		case 3:
+			return 11;
+		case 4:
+			return 8;
+		case 5:
+			return 6;
+		case 6:
+			return 5;
+		case 12:
+			return 2;
+		case 24:
+			return .5;
+		case 18:
+			return 1;
+		default:
+			return -1;
 		}
 	}
 	
-	private void makePanel()
+	/**
+	 * Checks to see if the number picked is in the userPicked array.
+	 * 
+	 * @return True if userPick contains resultNumber.
+	 */
+	private boolean didUserWin()
 	{
-		gamePanel = new RouletteGameBoard().makeGameBoard();
+		for (int number : userPick)
+		{
+			if (number == resultNumber)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private String getResult(boolean bool)
+	{
+		String result;
+		String userPickedText = determinePickText();
+		String redOrBlack = "";
+		
+		if (resultNumber != 0 && resultNumber != 37)
+		{
+			for (int num : BLACK_NUM)
+			{
+				if (num == resultNumber)
+				{
+					redOrBlack = "BLACK";
+				}
+			}
+			
+			if (redOrBlack.equals(""))
+			{
+				redOrBlack = "RED";
+			}
+		}
+		
+		if (bool)
+		{
+			payout = userBet + (userBet * odds);
+			result = "YOU WIN!!!\n"
+					+ "Your Numbers Picked: " + userPickedText + "\n"
+					+ "Game Number: " + (resultNumber == 37 ? "00" : resultNumber) 
+						+ " " +redOrBlack + "\n"
+					+ "Your Bet Amount: " + userBet + "\n"
+					+ "Your Payout: " + payout;
+		}
+		else
+		{
+			payout = 0;
+			result = "YOU LOSE!!!\n"
+					+ "Your Numbers Picked: " + userPickedText + "\n"
+					+ "Game Number: " + (resultNumber == 37 ? "00" : resultNumber) 
+						+ " "+ redOrBlack + "\n"
+					+ "Your Bet Amount: " + userBet + "\n"
+					+ "Your Payout: " + payout;
+		}
+		
+		return result;
+	}
+	
+	/**
+	 *  Determines what string to return for any user pick if the user picked numbers 
+	 *  that have words displayed. 
+	 *  
+	 * @return The text for the number picked. Null if user picked a number without text.
+	 */
+	private String determinePickText()
+	{
+		if (userPick == BLACK_NUM)
+		{
+			return BLACK_TEXT;
+		}
+		else if (userPick == RED_NUM)
+		{
+			return RED_TEXT;
+		}
+		else if (userPick == FIRST_HALF)
+		{
+			return FIRST_HALF_TEXT;
+		}
+		else if (userPick == LAST_HALF)
+		{
+			return SECOND_HALF_TEXT;
+		}
+		else if (userPick == FIRST_TWELVE)
+		{
+			return FIRST_TWELVE_TEXT;
+		}
+		else if (userPick == SECOND_TWELVE)
+		{
+			return SECOND_TWELVE_TEXT;
+		}
+		else if (userPick == THIRD_TWELVE)
+		{
+			return THIRD_TWELVE_TEXT;
+		}
+		else if (userPick == EVEN_NUM)
+		{
+			return EVEN_TEXT;
+		}
+		else if (userPick == ODD_NUM)
+		{
+			return ODD_TEXT;
+		}
+		else if (userPick == TWO_ONE_TOP)
+		{
+			return TWO_TOP_TEXT;
+		}
+		else if (userPick == TWO_ONE_TOP_MID)
+		{
+			return TWO_TOP_MID_TEXT;
+		}
+		else if (userPick == TWO_ONE_MID)
+		{
+			return TWO_MID_TEXT;
+		}
+		else if (userPick == TWO_ONE_MID_BOTTOM)
+		{
+			return TWO_MID_BOTTOM_TEXT;
+		}
+		else if (userPick == TWO_ONE_BOTTOM)
+		{
+			return TWO_BOTTOM_TEXT;
+		}
+		else
+		{
+			String result = "";
+			
+			for (int num = 0; num < userPick.length; num++)
+			{
+				if (num == userPick.length-1)
+				{
+					System.out.print(num);
+					if (userPick[num] == 37)
+					{
+						result = result + "00";
+					}
+					else
+					{
+						result = result + userPick[num];
+					}
+				}
+				else
+				{
+					if (userPick[num] == 37)
+					{
+						result = result + "00, ";
+					}
+					else
+					{
+						result = result + userPick[num] + ", ";
+					}
+				}
+			}
+			return result;
+		}
 	}
 	
 	/**
@@ -57,7 +340,7 @@ public class Roulette extends Game
 	 * are ready for another game.
 	 * 
 	 */
-	private void restGame()
+	public void resetGame()
 	{
 		resultNumber = 0;
 		odds = 0;
@@ -92,17 +375,8 @@ public class Roulette extends Game
 	 */
 	private class RouletteGameBoard
 	{
-		private String twoText = "2 to 1";
-		private String firstTwelve = "1st 12";
-		private String secondTwelve = "2nd 12";
-		private String thirdTwelve = "3rd 12";
-		private String even = "EVEN ";		
-		private String firstHalf = "1 to 18";
-		private String secondHalf = "19 to 36";
-		private String odd = "ODD";
-		private String red = "RED";
-		private String black = "BLACK";
-		
+			
+		// Strings for image locations
 		private String twoN = "/images/btn_2to1_bottom_normal.png";
 		private String twoM = "/images/btn_2to1_bottom_mouseover.png";
 		private String twoP = "/images/btn_2to1_bottom_pressed.png";
@@ -137,35 +411,50 @@ public class Roulette extends Game
 		{
 		}
 		
+		/**
+		 * Creates a game board by calling each method that will return the proper panel with buttons.
+		 * 
+		 * @return The whole game board created.
+		 */
 		public JPanel makeGameBoard()
 		{
+			// for all the number and line buttons and the bottom half of the board buttons.
 			JPanel numbers = new JPanel();
-			numbers.setLayout(new javax.swing.BoxLayout(numbers, javax.swing.BoxLayout.Y_AXIS));
+			numbers.setLayout(new javax.swing.BoxLayout(
+					numbers, javax.swing.BoxLayout.Y_AXIS));
 
+			// The whole game board.
 			JPanel totalBoard = new JPanel();
-			totalBoard.setLayout(new javax.swing.BoxLayout(totalBoard, javax.swing.BoxLayout.X_AXIS));
+			totalBoard.setLayout(new javax.swing.BoxLayout(
+					totalBoard, javax.swing.BoxLayout.X_AXIS));
 
+			// Add the top white line to the board. Only used to show the line and not used
+			// as a button.
 			JPanel tmp = new JPanel();
 			tmp.setLayout(new javax.swing.BoxLayout(tmp, javax.swing.BoxLayout.X_AXIS));
-			RouletteButton topLine = new RouletteButton(topN, topN, topN, -1,-1);
+			RouletteButton topLine = new RouletteButton(topN, topN, topN, 
+					RouletteButton.LINE_BUTTON_NOT_CLICKABLE);
 			topLine.setDisabledIcon(new ImageIcon(getClass().getResource(topN)));
 			topLine.setEnabled(false);
 			tmp.add(topLine);
 			
+			// Adds all the middle vertical buttons.
 			numbers.add(tmp);
 			numbers.add(firstRowNumbers());
 			numbers.add(firstrowLines());
 			numbers.add(secondRowNumbers());
 			numbers.add(secondRowLines());
-			numbers.add(thridRowNumbers());
-
+			numbers.add(thirdRowNumbers());
+			numbers.add(thirdRowLines());
 			
+			// The rest of the buttons
 			JPanel zeros = zeros();
 			JPanel linesBetween0andNumbers = linesBetween0andnumbers();
 			JPanel twoToOne = twoToOne();
 			JPanel twelve = twelve();
 			JPanel bottomOfBoard = bottomOfBoard();
 
+			// Makes all buttons align to the top
 			zeros.setAlignmentY(Component.TOP_ALIGNMENT);
 			linesBetween0andNumbers.setAlignmentY(Component.TOP_ALIGNMENT);
 			numbers.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -173,14 +462,17 @@ public class Roulette extends Game
 			twelve.setAlignmentY(Component.LEFT_ALIGNMENT);
 			bottomOfBoard.setAlignmentY(Component.LEFT_ALIGNMENT);
 			
+			// adds the bottom half of board to the numbers panel
 			numbers.add(twelve);
 			numbers.add(bottomOfBoard);
 			
+			// adds all panels to the total board.
 			totalBoard.add(zeros);
 			totalBoard.add(linesBetween0andNumbers);
 			totalBoard.add(numbers);
 			totalBoard.add(twoToOne);
 
+			// set the background color to green
 			totalBoard.setBackground(Color.decode("#137c43"));
 			twoToOne.setBackground(Color.decode("#137c43"));
 			
@@ -188,6 +480,12 @@ public class Roulette extends Game
 			
 		}
 		
+		/**
+		 * Creates a panel that contains the first row of number buttons and the vertical lines
+		 * inbetween them.
+		 * 
+		 * @return The panel created.
+		 */
 		private JPanel firstRowNumbers()
 		{
 			JPanel temp = new JPanel();
@@ -228,15 +526,19 @@ public class Roulette extends Game
 			
 			for (RouletteButton button : buttons)
 			{
-				//*************************testing*********
 				button.addMouseListener(listener); 
-				//******************************************
 				temp.add(button);
 			}
 			
 			return temp;
 		}
 		
+		/**
+		 * Creates a panel that contains the second row of number buttons and the vertical lines
+		 * inbetween them.
+		 * 
+		 * @return The panel created.
+		 */
 		private JPanel secondRowNumbers()
 		{
 			JPanel temp = new JPanel();
@@ -273,15 +575,24 @@ public class Roulette extends Game
 			buttons[21] = new RouletteButton(verM, verP, verN, 32,35);
 			buttons[22] = new RouletteButton(mOver, blkP, blkN, 35);
 
+			ButtonListener listener = new ButtonListener();
+			
 			for (RouletteButton button : buttons)
 			{
+				button.addMouseListener(listener); 
 				temp.add(button);
 			}
 			
 			return temp;
 		}
 		
-		private JPanel thridRowNumbers()
+		/**
+		 * Creates a panel that contains the third row of number buttons and the vertical lines
+		 * inbetween them.
+		 * 
+		 * @return Thr panel created.
+		 */
+		private JPanel thirdRowNumbers()
 		{
 			JPanel temp = new JPanel();
 
@@ -318,14 +629,23 @@ public class Roulette extends Game
 			buttons[21] = new RouletteButton(verM, verP, verN, 31,34);
 			buttons[22] = new RouletteButton(mOver, redP, redN, 34);
 
+			ButtonListener listener = new ButtonListener();
+			
 			for (RouletteButton button : buttons)
 			{
+				button.addMouseListener(listener); 
 				temp.add(button);
 			}
 			
 			return temp;
 		}
 		
+		/**
+		 * Creates a panel that contains the first horizontal line buttons that are inbetween the numbers
+		 * on the game board. 
+		 * 
+		 * @return The panel created.
+		 */
 		private JPanel firstrowLines()
 		{
 			JPanel temp = new JPanel();
@@ -341,19 +661,29 @@ public class Roulette extends Game
 			{
 				buttons[num3] = new RouletteButton(horM, horP, horN, num1,num2);
 				num3++;
-				buttons[num3] = new RouletteButton(sqM, sqP, sqN, num1,num2,num1 = num1 +3, num2 = num2 +3);
+				buttons[num3] = new RouletteButton(sqM, sqP, sqN, 
+						num1,num2,num1 = num1 +3, num2 = num2 +3);
 				num3++;
 				
 			}
 			buttons[num3] = new RouletteButton(horM, horP, horN, 35,36);
 
+			ButtonListener listener = new ButtonListener();
+			
 			for (RouletteButton button : buttons)
 			{
+				button.addMouseListener(listener); 
 				temp.add(button);
 			}
 			return temp;
 		}
 		
+		/**
+		 * Creates a panel that contains the second horizontal line buttons that are inbetween the numbers
+		 * on the game board. 
+		 * 
+		 * @return The panel created.
+		 */
 		private JPanel secondRowLines()
 		{
 			JPanel temp = new JPanel();
@@ -369,20 +699,70 @@ public class Roulette extends Game
 			{
 				buttons[num3] = new RouletteButton(horM, horP, horN, num1,num2);
 				num3++;
-				buttons[num3] = new RouletteButton(sqM, sqP, sqN, num1,num2,num1 = num1 +3, num2 = num2 +3);
+				buttons[num3] = new RouletteButton(sqM, sqP, sqN, 
+						num1,num2,num1 = num1 +3, num2 = num2 +3);
 				num3++;
 				
 			}
 			
 			buttons[num3] = new RouletteButton(horM, horP, horN, 35,36);
 
+			ButtonListener listener = new ButtonListener();
+			
 			for (RouletteButton button : buttons)
 			{
+				button.addMouseListener(listener); 
 				temp.add(button);
 			}
 			return temp;
 		}
 		
+		/**
+		 * Creates a panel that contains the third horizontal line buttons that are inbetween the numbers
+		 * and the bottom of the game board. 
+		 * 
+		 * @return The panel created.
+		 */
+		private JPanel thirdRowLines()
+		{
+			JPanel temp = new JPanel();
+			temp.setLayout(new javax.swing.BoxLayout(temp, javax.swing.BoxLayout.X_AXIS));
+			
+			RouletteButton[] buttons = new RouletteButton[23];
+
+			int num1 = 1;
+			int num2 = 2;
+			int num3 = 3;
+			int num4 = 0;
+			
+			for (int num = 0; num < 11; num++)
+			{
+				buttons[num4] = new RouletteButton(horM, horP, horN, num1,num2,num3);
+				num4++;
+				buttons[num4] = new RouletteButton(sqM, sqP, sqN, 
+						num1,num2,num3,num1 = num1 +3, num2 = num2 +3,num3 = num3 +3);
+				num4++;
+				
+			}
+			
+			buttons[num4] = new RouletteButton(horM, horP, horN, 34,35,36);
+
+			ButtonListener listener = new ButtonListener();
+			
+			for (RouletteButton button : buttons)
+			{
+				button.addMouseListener(listener); 
+				temp.add(button);
+			}
+			return temp;
+		}
+		
+		/**
+		 * Creates a panel that contains all the buttons between the 0 buttons and the numbers
+		 * on the game board.
+		 * 
+		 * @return The panel created.
+		 */
 		private JPanel linesBetween0andnumbers()
 		{
 			String smallN = "/images/btn_line_ver_small_normal.png";
@@ -402,7 +782,7 @@ public class Roulette extends Game
 			JPanel temp = new JPanel();
 			temp.setLayout(new javax.swing.BoxLayout(temp, javax.swing.BoxLayout.Y_AXIS));
 			
-			RouletteButton[] buttons = new RouletteButton[8];
+			RouletteButton[] buttons = new RouletteButton[9];
 			
 			buttons[0] = new RouletteButton(larLineM, larLineP, larLineN, 3,37);
 			buttons[1] = new RouletteButton(sqM, sqP, sqN, 2,3,37);
@@ -411,18 +791,31 @@ public class Roulette extends Game
 			buttons[4] = new RouletteButton(smallM, smallP, smallN, 0,2);
 			buttons[5] = new RouletteButton(sqM, sqP, sqN, 0,1,2);
 			buttons[6] = new RouletteButton(verM, verP, verN, 0,1);
-			
-			buttons[7] = new RouletteButton(lineleft, lineleft, lineleft, -1,-1);
-			buttons[7].setDisabledIcon(new ImageIcon(getClass().getResource(lineleft)));
-			buttons[7].setEnabled(false);
+			buttons[7] = new RouletteButton(sqM, sqP, sqN, 0,1,2,3,37);
 
+			
+			// This is for the white line next to the bottom half of the board on the right. Only used 
+			// because of the need for the picture and not the button
+			buttons[8] = new RouletteButton(lineleft, lineleft, lineleft, 
+					RouletteButton.LINE_BUTTON_NOT_CLICKABLE);
+			buttons[8].setDisabledIcon(new ImageIcon(getClass().getResource(lineleft)));
+			buttons[8].setEnabled(false);
+
+			ButtonListener listener = new ButtonListener();
+			
 			for (RouletteButton button : buttons)
 			{
+				button.addMouseListener(listener); 
 				temp.add(button);
 			}
 			return temp;
 		}
 		
+		/**
+		 * Creates a panel the contains the two zero buttons and the line inbetween them.
+		 * 
+		 * @return The panel created.
+		 */
 		private JPanel zeros()
 		{
 			String ooN = "/images/btn_00_normal.png";
@@ -446,13 +839,21 @@ public class Roulette extends Game
 			buttons[1] = new RouletteButton(horOM, horOP, horON, 0,37);
 			buttons[2] = new RouletteButton(oM, oP, oN, 0);
 			
+			ButtonListener listener = new ButtonListener();
+			
 			for (RouletteButton button : buttons)
 			{
+				button.addMouseListener(listener); 
 				temp.add(button);
 			}
 			return temp;
 		}
 		
+		/**
+		 * Creates a panel that contains the three buttons for 2 to 1 odds. 
+		 * 
+		 * @return The Panel created.
+		 */
 		private JPanel twoToOne()
 		{
 
@@ -472,31 +873,42 @@ public class Roulette extends Game
 			RouletteButton[] buttons = new RouletteButton[6];
 			
 			buttons[0] = new RouletteButton(twoTopM, twoTopP, twoTopN, 
-					36,9,12,15,18,21,24,27,30,33,36);
-			buttons[0].addStringTextRotated(twoText, 20);
+					TWO_ONE_TOP);
+			buttons[0].addStringTextRotated(TWO_TEXT, 20);
 			buttons[1] = new RouletteButton(horBetweenM, horBetweenP, horBetweenN, 
-					2,3,4,6,8,6,11,12,14,15,17,18,20,21,23,24,26,27,29,30,32,33,35,36);
+					TWO_ONE_TOP_MID);
 			buttons[2] = new RouletteButton(twoMidM, twoMidP, twoMidN, 
-					2,5,8,11,14,17,20,23,26,29,32,35);
-			buttons[2].addStringTextRotated(twoText, 20);
+					TWO_ONE_MID);
+			buttons[2].addStringTextRotated(TWO_TEXT, 20);
 			buttons[3] = new RouletteButton(horBetweenM, horBetweenP, horBetweenN, 
-					1,2,4,5,7,8,10,11,13,14,16,17,19,20,22,23,25,26,28,29,31,32,34,35);
+					TWO_ONE_MID_BOTTOM);
 			buttons[4] = new RouletteButton(twoM, twoP, twoN, 
-					1,4,7,10,13,16,19,22,25,28,31,34);
-			buttons[4].addStringTextRotated(twoText, 20);
+					TWO_ONE_BOTTOM);
+			buttons[4].addStringTextRotated(TWO_TEXT, 20);
 			
-			buttons[5] = new RouletteButton(lineRight, lineRight, lineRight, -1,-1);
+			// This is for the white line next to the bottom half of the board on the right. Only used 
+			// because of the need for the picture and not the button
+			buttons[5] = new RouletteButton(lineRight, lineRight, lineRight, 
+					RouletteButton.LINE_BUTTON_NOT_CLICKABLE);
 			buttons[5].setDisabledIcon(new ImageIcon(getClass().getResource(lineRight)));
 			buttons[5].setEnabled(false);
 			
+			ButtonListener listener = new ButtonListener();
+			
 			for (RouletteButton button : buttons)
 			{
+				button.addMouseListener(listener); 
 				temp.add(button);
 			}
 			
 			return temp;
 		}
 		
+		/**
+		 * Creates a panel that contains the buttons 1st 12, 2nd 12, and 3rd 12 for the game.
+		 * 
+		 * @return The panel created.
+		 */
 		private JPanel twelve()
 		{
 			String endN = "/images/btn_3rds_ends_normal.png";
@@ -512,21 +924,30 @@ public class Roulette extends Game
 	
 			RouletteButton[] buttons = new RouletteButton[3];
 			
-			buttons[0] = new RouletteButton(midM, midP, midN, 1,2,3,4,5,6,7,8,9,10,11,12);
-			buttons[0].addText(firstTwelve, 30);
-			buttons[1] = new RouletteButton(endM, endP, endN, 13,14,15,16,17,18,19,20,21,22,23,24);
-			buttons[1].addText(secondTwelve, 30);
-			buttons[2] = new RouletteButton(midM, midP, midN, 25,26,27,28,29,30,31,32,33,34,35,36);
-			buttons[2].addText(thirdTwelve, 30);
+			buttons[0] = new RouletteButton(midM, midP, midN, FIRST_TWELVE);
+			buttons[0].addText(FIRST_TWELVE_TEXT, 30);
+			buttons[1] = new RouletteButton(endM, endP, endN, SECOND_TWELVE);
+			buttons[1].addText(SECOND_TWELVE_TEXT, 30);
+			buttons[2] = new RouletteButton(midM, midP, midN, THIRD_TWELVE);
+			buttons[2].addText(THIRD_TWELVE_TEXT, 30);
+			
+			ButtonListener listener = new ButtonListener();
 			
 			for (RouletteButton button : buttons)
 			{
+				button.addMouseListener(listener); 
 				temp.add(button);
 			}
 			
 			return temp;
 		}
 		
+		/**
+		 * Creates the Panel for the bottom of the board. The panel will contain 1 to 18, 
+		 * EVEN, RED, BLACK, ODD, 19 to 36 buttons.
+		 * 
+		 * @return The panel created
+		 */
 		private JPanel bottomOfBoard()
 		{
 			String firstHalfN = "/images/btn_1-18_and_odd_normal.png";
@@ -546,28 +967,30 @@ public class Roulette extends Game
 	
 			RouletteButton[] buttons = new RouletteButton[6];
 			
-			buttons[0] = new RouletteButton(lastHalfM, lastHalfP, lastHalfN, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18);
-			buttons[0].addText(firstHalf, 25);
-			buttons[1] = new RouletteButton(lastHalfM, lastHalfP, lastHalfN, 2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36);
-			buttons[1].addText(even, 25);
-			buttons[2] = new RouletteButton(lastHalfM, lastHalfP, lastHalfN, 1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36);
-			buttons[2].addText(red, 25);
+			buttons[0] = new RouletteButton(lastHalfM, lastHalfP, lastHalfN, FIRST_HALF);
+			buttons[0].addText(FIRST_HALF_TEXT, 25);
+			buttons[1] = new RouletteButton(lastHalfM, lastHalfP, lastHalfN, EVEN_NUM);
+			buttons[1].addText(EVEN_TEXT, 25);
+			buttons[2] = new RouletteButton(lastHalfM, lastHalfP, lastHalfN, RED_NUM);
+			buttons[2].addText(RED_TEXT, 25);
 			buttons[2].setForeground(Color.RED);
-			buttons[3] = new RouletteButton(midM, midP, midN, 2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35);
-			buttons[3].addText(black, 25);
+			buttons[3] = new RouletteButton(midM, midP, midN, BLACK_NUM);
+			buttons[3].addText(BLACK_TEXT, 25);
 			buttons[3].setForeground(Color.BLACK);
-			buttons[4] = new RouletteButton(firstHalfM, firstHalfP, firstHalfN, 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35);
-			buttons[4].addText(odd, 25);
-			buttons[5] = new RouletteButton(midM, midP, midN, 19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36);
-			buttons[5].addText(secondHalf, 25);
+			buttons[4] = new RouletteButton(firstHalfM, firstHalfP, firstHalfN, ODD_NUM);
+			buttons[4].addText(ODD_TEXT, 25);
+			buttons[5] = new RouletteButton(midM, midP, midN, LAST_HALF);
+			buttons[5].addText(SECOND_HALF_TEXT, 25);
+			
+			ButtonListener listener = new ButtonListener();
 			
 			for (RouletteButton button : buttons)
 			{
+				button.addMouseListener(listener); 
 				temp.add(button);
 			}
 			
 			return temp;
-			
 		}
 		
 		
@@ -575,45 +998,34 @@ public class Roulette extends Game
 		private class ButtonListener implements MouseListener
 		{
 
-			@Override
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-				
+			public void mouseClicked(java.awt.event.MouseEvent e) 
+			{
 				displayButton((RouletteButton) e.getSource());
 			}
 
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-				
+			public void mouseEntered(java.awt.event.MouseEvent e) 
+			{				
 			}
 
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-				
+			public void mouseExited(java.awt.event.MouseEvent e) 
+			{				
 			}
 
-			@Override
-			public void mousePressed(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-				
+			public void mousePressed(java.awt.event.MouseEvent e) 
+			{				
 			}
 
-			@Override
-			public void mouseReleased(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-				
+			public void mouseReleased(java.awt.event.MouseEvent e) 
+			{				
 			}
 
 			public void displayButton(RouletteButton b)
 			{
-				String temp = "";
-				for (int num : b.getNumbers())
+				if (!b.getNumbers().equals(RouletteButton.LINE_BUTTON_NOT_CLICKABLE))
 				{
-					temp = temp + num + ", ";
+					userPick = b.getNumbers();
+					MainPanel.lblResults.setText(""+b.getNumbers().length);
 				}
-				//MainPanel.lblResults.setText(temp);
 			}
 			
 		}

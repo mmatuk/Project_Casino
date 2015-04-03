@@ -44,17 +44,17 @@ abstract class Game
 		makePanel();
 	}
 	
-	public void playGame()
-	{
-		// Add game code here
-	}
+
+	// Methods that need to be used in the child class.
+	public abstract String playGame();
+	public abstract void resetGame();
 	
 	/**
 	 * Makes a panel that will be used to display the game board of the 
 	 * game in the tabs
 	 * 
 	 */
-	private void makePanel()
+	public JPanel makePanel()
 	{
 		// This is for if no panel was created. An error panel will be
 		// created instead
@@ -65,6 +65,7 @@ abstract class Game
 		error.setEditable(false);
 		gamePanel.add(error);
 		gamePanel.setPreferredSize(PANEL_SIZE);
+		return gamePanel;
 	}
 	
 	public String getGameName()

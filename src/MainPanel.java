@@ -33,6 +33,7 @@ public class MainPanel extends javax.swing.JPanel
     
     //*********test
     private RouletteButton test;
+	Roulette testGame = new Roulette("Roulette");
     //**************
     
     /**
@@ -286,6 +287,18 @@ public class MainPanel extends javax.swing.JPanel
         );
 
         btnPlay.setText("PLAY");
+        
+        //*****************************test**********************
+        //*******************************************************
+        btnPlay.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnPlayActionPerformed(evt);
+            }
+        });        
+        //*******************************************************
+        //*******************************************************
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -330,15 +343,24 @@ public class MainPanel extends javax.swing.JPanel
         comboRasieLow.addItem(RAISE);
         comboRasieLow.addItem(LOWER);
     }
-    //************************************************
+    //********************TEST****************************
+    //*************************************************
     private void test()
-    {
-    	Roulette testGame = new Roulette("Roulette");
-    	
+    {    	
         jPanelGameBoard.add(testGame.getGamePanel());
         jPanelGameBoard.setBackground(Color.decode("#137c43"));
     }
+    
+    private void btnPlayActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddMoneyActionPerformed
+    {//GEN-HEADEREND:event_btnAddMoneyActionPerformed
+    	testGame.setUserBet(500);
+    	lblResults.setText("PLAY");
+    	lblResults.setText(testGame.playGame());
+    }//GEN-LAST:event_btnAddMoneyActionPerformed
+    
     //*************************************************
+    //*************************************************
+    
     private void btnAddMoneyActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddMoneyActionPerformed
     {//GEN-HEADEREND:event_btnAddMoneyActionPerformed
         // TODO add your handling code here:
@@ -372,7 +394,7 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JLabel lblAmountBet;
     private javax.swing.JLabel lblBankBal;
     private javax.swing.JLabel lblCurrentBet;
-    private javax.swing.JLabel lblResults;
+    public static javax.swing.JLabel lblResults;
     private javax.swing.JLabel lblResultsText;
     private javax.swing.JLabel lblSetBet;
     private javax.swing.JLabel lblUserName;

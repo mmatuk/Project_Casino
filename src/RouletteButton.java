@@ -1,4 +1,3 @@
-
 //******************************************************************************
 //  RouletteButton.java                             Project Casino
 //  Author: Matt Matuk                              Created: march 30, 2015                         
@@ -33,6 +32,8 @@ import javax.xml.soap.Text;
 public class RouletteButton extends JButton
 {
     private int[] numbers;
+    
+	public final static int[] LINE_BUTTON_NOT_CLICKABLE = {-1,-1}; //For the lines that are not clickable.
     
     /**
      * Create a new Roulette button
