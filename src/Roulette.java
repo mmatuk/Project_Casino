@@ -13,6 +13,7 @@ import java.awt.event.MouseListener;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Roulette extends Game
@@ -22,63 +23,55 @@ public class Roulette extends Game
 			{
 			1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36
 			};
-	private static int[] BLACK_NUM =
+	private static final int[] BLACK_NUM =
 			{
 			2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35
 			};
-	private static int[] ODD_NUM =
+	private static final int[] ODD_NUM =
 			{
 			1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35			
 			};
-	private static int[] EVEN_NUM =
+	private static final int[] EVEN_NUM =
 			{
 			2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36			
 			};
-	private static int[] LOW_NUM =
-			{
-			1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35		
-			};
-	private static int[] HIGH_NUM =
-			{
-			1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35		
-			};
-	private static int[] FIRST_TWELVE =
+	private static final int[] FIRST_TWELVE =
 			{
 			1,2,3,4,5,6,7,8,9,10,11,12		
 			};
-	private static int[] SECOND_TWELVE =
+	private static final int[] SECOND_TWELVE =
 			{
 			13,14,15,16,17,18,19,20,21,22,23,24			
 			};
-	private static int[] THIRD_TWELVE =
+	private static final int[] THIRD_TWELVE =
 			{
 			25,26,27,28,29,30,31,32,33,34,35,36			
 			};
-	private static int[] TWO_ONE_TOP =
+	private static final int[] TWO_ONE_TOP =
 			{
 			3,6,9,12,15,18,21,24,27,30,33,36		
 			};
-	private static int[] TWO_ONE_TOP_MID =
+	private static final int[] TWO_ONE_TOP_MID =
 			{
 			2,3,4,6,8,6,11,12,14,15,17,18,20,21,23,24,26,27,29,30,32,33,35,36		
 			};
-	private static int[] TWO_ONE_MID =
+	private static final int[] TWO_ONE_MID =
 			{
 			2,5,8,11,14,17,20,23,26,29,32,35		
 			};
-	private static int[] TWO_ONE_MID_BOTTOM =
+	private static final int[] TWO_ONE_MID_BOTTOM =
 			{
 			1,2,4,5,7,8,10,11,13,14,16,17,19,20,22,23,25,26,28,29,31,32,34,35		
 			};
-	private static int[] TWO_ONE_BOTTOM =
+	private static final int[] TWO_ONE_BOTTOM =
 			{
 			1,4,7,10,13,16,19,22,25,28,31,34			
 			};
-	private static int[] FIRST_HALF =
+	private static final int[] FIRST_HALF =
 			{
 			1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18			
 			};
-	private static int[] LAST_HALF =
+	private static final int[] LAST_HALF =
 			{
 			19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36		
 			};
@@ -377,35 +370,35 @@ public class Roulette extends Game
 	{
 			
 		// Strings for image locations
-		private String twoN = "/images/btn_2to1_bottom_normal.png";
-		private String twoM = "/images/btn_2to1_bottom_mouseover.png";
-		private String twoP = "/images/btn_2to1_bottom_pressed.png";
+		private final String twoN = "/images/btn_2to1_bottom_normal.png";
+		private final String twoM = "/images/btn_2to1_bottom_mouseover.png";
+		private final String twoP = "/images/btn_2to1_bottom_pressed.png";
 
-		private String twoMidN = "/images/btn_2to1_normal.png";
-		private String twoMidM = "/images/btn_2to1_mouseover.png";
-		private String twoMidP = "/images/btn_2to1_pressed.png";
+		private final String twoMidN = "/images/btn_2to1_normal.png";
+		private final String twoMidM = "/images/btn_2to1_mouseover.png";
+		private final String twoMidP = "/images/btn_2to1_pressed.png";
 		
-		private String horN = "/images/btn_line_hor_number_normal.png";
-		private String horP = "/images/btn_line_hor_number_pressed.png";
-		private String horM = "/images/btn_line_hor_number_mouseover.png";
+		private final String horN = "/images/btn_line_hor_number_normal.png";
+		private final String horP = "/images/btn_line_hor_number_pressed.png";
+		private final String horM = "/images/btn_line_hor_number_mouseover.png";
 		
-		private String sqN = "/images/btn_line_square_number_normal.png";
-		private String sqM = "/images/btn_line_square_number_mouseover.png";
-		private String sqP = "/images/btn_line_square_number_pressed.png";
+		private final String sqN = "/images/btn_line_square_number_normal.png";
+		private final String sqM = "/images/btn_line_square_number_mouseover.png";
+		private final String sqP = "/images/btn_line_square_number_pressed.png";
 		
-		private String redN = "/images/btn_red_number_normal.png";
-		private String redP = "/images/btn_red_number_pressed.png";
+		private final String redN = "/images/btn_red_number_normal.png";
+		private final String redP = "/images/btn_red_number_pressed.png";
 		
-		private String mOver = "/images/btn_number_mouseover.png";
+		private final String mOver = "/images/btn_number_mouseover.png";
 
-		private String blkN = "/images/btn_black_number_normal.png";
-		private String blkP = "/images/btn_black_number_pressed.png";
+		private final String blkN = "/images/btn_black_number_normal.png";
+		private final String blkP = "/images/btn_black_number_pressed.png";
 		
-		private String verN = "/images/btn_line_ver_number_normal.png";
-		private String verM = "/images/btn_line_ver_number_mouseover.png";
-		private String verP = "/images/btn_line_ver_number_pressed.png";
+		private final String verN = "/images/btn_line_ver_number_normal.png";
+		private final String verM = "/images/btn_line_ver_number_mouseover.png";
+		private final String verP = "/images/btn_line_ver_number_pressed.png";
 		
-		private String topN = "/images/btn_line_top.png";
+		private final String topN = "/images/btn_line_top.png";
 
 		public RouletteGameBoard()
 		{
@@ -1000,8 +993,17 @@ public class Roulette extends Game
 
 			public void mouseClicked(java.awt.event.MouseEvent e) 
 			{
-				displayButton((RouletteButton) e.getSource());
-			}
+                            try
+                            {
+                                RouletteButton b = (RouletteButton) e.getSource();
+                                userPick = b.getNumbers();
+                            } 
+                            catch (Exception error)
+                            {
+                                error.printStackTrace();
+                                JOptionPane.showMessageDialog(gamePanel, "Error. Button not found.");
+                            }
+                        }
 
 			public void mouseEntered(java.awt.event.MouseEvent e) 
 			{				
@@ -1018,16 +1020,6 @@ public class Roulette extends Game
 			public void mouseReleased(java.awt.event.MouseEvent e) 
 			{				
 			}
-
-			public void displayButton(RouletteButton b)
-			{
-				if (!b.getNumbers().equals(RouletteButton.LINE_BUTTON_NOT_CLICKABLE))
-				{
-					userPick = b.getNumbers();
-					MainPanel.lblResults.setText(""+b.getNumbers().length);
-				}
-			}
-			
 		}
 	}
 

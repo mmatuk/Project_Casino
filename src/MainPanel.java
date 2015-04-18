@@ -1,6 +1,4 @@
 
-import java.awt.Color;
-import java.awt.List;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,12 +22,6 @@ public class MainPanel extends javax.swing.JPanel
     private double betAmount;
     
     private Game[] games;
-    private Game currentGame;
-    
-    //*********test
-    private RouletteButton test;
-	Roulette testGame = new Roulette("Roulette");
-    //**************
     
     /**
      * Creates new form MainPanel
@@ -38,11 +30,10 @@ public class MainPanel extends javax.swing.JPanel
     {
         initComponents();
         setComponetValues();
-        
-        //*****test******
-         test();
-         createGames();
-         initVariables();
+        initVariables();
+
+        createGames();
+        displayGameBoards();
     }
 
     /**
@@ -74,9 +65,6 @@ public class MainPanel extends javax.swing.JPanel
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jTabbedPaneGames = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jPanelGameBoard = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         jPanelResults = new javax.swing.JPanel();
         lblResults = new javax.swing.JLabel();
         lblResultsText = new javax.swing.JLabel();
@@ -223,38 +211,6 @@ public class MainPanel extends javax.swing.JPanel
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanelGameBoard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanelGameBoard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
-        );
-
-        jTabbedPaneGames.addTab("Roulette", null, jPanel1, "");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1371, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 606, Short.MAX_VALUE)
-        );
-
-        jTabbedPaneGames.addTab("tab2", jPanel2);
-
         jPanelResults.setBackground(new java.awt.Color(204, 204, 204));
         jPanelResults.setPreferredSize(new java.awt.Dimension(1087, 50));
 
@@ -284,6 +240,13 @@ public class MainPanel extends javax.swing.JPanel
         );
 
         btnPlay.setText("PLAY");
+        btnPlay.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnPlayActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -328,14 +291,7 @@ public class MainPanel extends javax.swing.JPanel
         comboRasieLow.addItem(RAISE);
         comboRasieLow.addItem(LOWER);
     }
-    //********************TEST****************************
-    //*************************************************
-    private void test()
-    {    	
-        jPanelGameBoard.add(testGame.getGamePanel());
-        jPanelGameBoard.setBackground(Color.decode("#137c43"));
-    }
-    
+
     /**
      * Creates each game for the casino and adds the game to the games array. The size
      * of the array will be determined by how many games are playable in the game.
@@ -358,19 +314,24 @@ public class MainPanel extends javax.swing.JPanel
     private void initVariables()
     {
     	games = null;
-    	currentGame = null;
     	bankAccount = 0;
     	betAmount = 0;
     }
-    private void btnPlayActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddMoneyActionPerformed
-    {//GEN-HEADEREND:event_btnAddMoneyActionPerformed
-    	testGame.setUserBet(500);
-    	lblResults.setText("PLAY");
-    	lblResults.setText(testGame.playGame());
-    }//GEN-LAST:event_btnAddMoneyActionPerformed
     
-    //*************************************************
-    //*************************************************
+    private void displayGameBoards()
+    {
+        for (Game game : games)
+        {
+            jTabbedPaneGames.add(game.getGameName(), game.getGamePanel());
+        }
+    }
+
+    // Need to remove method below this
+    private void btnPlayActionPerformed(java.awt.event.ActionEvent evt)                                            
+    {                                                
+
+    }                                           
+    //*******************************************************************
     
     private void btnAddMoneyActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddMoneyActionPerformed
     {//GEN-HEADEREND:event_btnAddMoneyActionPerformed
@@ -381,6 +342,11 @@ public class MainPanel extends javax.swing.JPanel
     {//GEN-HEADEREND:event_btnBet1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBet1ActionPerformed
+
+    private void btnPlayActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnPlayActionPerformed
+    {//GEN-HEADEREND:event_btnPlayActionPerformed
+        games[jTabbedPaneGames.getSelectedIndex()].playGame();
+    }//GEN-LAST:event_btnPlayActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -394,10 +360,7 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelBetting;
-    private javax.swing.JPanel jPanelGameBoard;
     private javax.swing.JPanel jPanelResults;
     private javax.swing.JPanel jPanelUserInfo;
     private javax.swing.JSeparator jSeparator1;
