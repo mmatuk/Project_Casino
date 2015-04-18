@@ -325,13 +325,6 @@ public class MainPanel extends javax.swing.JPanel
             jTabbedPaneGames.add(game.getGameName(), game.getGamePanel());
         }
     }
-
-    // Need to remove method below this
-    private void btnPlayActionPerformed(java.awt.event.ActionEvent evt)                                            
-    {                                                
-
-    }                                           
-    //*******************************************************************
     
     private void btnAddMoneyActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddMoneyActionPerformed
     {//GEN-HEADEREND:event_btnAddMoneyActionPerformed
