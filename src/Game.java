@@ -6,10 +6,8 @@
 //  1. This class is the abstract class for all games created
 //
 //		-- Any game created must extend this class.
-//		-- The method of this class will not contain any code, the methods must
-//			be used in the child class.
 //
-//		** Panels created must be 900x580 in size. **
+//		** Game board Panel created must be 900x580 in size. **
 //
 //******************************************************************************
 
@@ -21,7 +19,9 @@ abstract class Game
 {
 	protected String gameName; // name of the game
 	protected JPanel gamePanel; // game board for the game
-	protected double userBet; 
+	protected JPanel gameInstructionsPanel; // instructions panel for game
+	protected JPanel gameResultsPanel; // Results panel for the game
+	protected double userBet; // amount being bet
 	protected String result; // Used for the text for the results of the game
 	protected double payout; // money won + users bet
 	final protected int PANEL_SIZE_X = 900;
@@ -42,9 +42,10 @@ abstract class Game
 		gameName = null;
 		PANEL_SIZE = new Dimension(PANEL_SIZE_X,PANEL_SIZE_Y);
 		makePanel();
+		makeResultsPanel();
+		makeInstructionsPanel();
 	}
 	
-
 	// Methods that need to be used in the child class.
 	public abstract String playGame();
 	public abstract void resetGame();
@@ -66,6 +67,30 @@ abstract class Game
 		gamePanel.add(error);
 		gamePanel.setPreferredSize(PANEL_SIZE);
 		return gamePanel;
+	}
+	
+	/**
+	 * Makes a panel for the results panel for the game. If no panel was created in the
+	 * child class, then an error panel is created. 
+	 * 
+	 * @return Returns the panel created.
+	 */
+	public JPanel makeResultsPanel()
+	{
+		gameResultsPanel = makePanel();
+		return gameResultsPanel;
+	}
+	
+	/**
+	 * Makes a panel for the Instructions panel for the game. If no panel was created in the
+	 * child class, then an error panel is created. 
+	 * 
+	 * @return Returns the panel created.
+	 */
+	public JPanel makeInstructionsPanel()
+	{
+		gameInstructionsPanel = makePanel();
+		return gameInstructionsPanel;
 	}
 	
 	public String getGameName()
@@ -93,6 +118,16 @@ abstract class Game
 		return payout;
 	}
 	
+	public JPanel getGameInstructionsPanel()
+	{
+		return gameInstructionsPanel;
+	}
+	
+	public JPanel getGameResultsPanel()
+	{
+		return gameResultsPanel;
+	}
+	
 	public void setGameName(String str)
 	{
 		gameName = str;
@@ -116,6 +151,16 @@ abstract class Game
 	public void setResult(String str)
 	{
 		result = str;
+	}
+	
+	public void setGameInstructionsPanel(JPanel panel)
+	{
+		gameInstructionsPanel = panel;
+	}
+	
+	public void setGameResultsPanel(JPanel panel)
+	{
+		gameResultsPanel = panel;
 	}
 	
 	public String toString()

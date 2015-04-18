@@ -1,11 +1,6 @@
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.List;
-import java.io.File;
-import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,11 +20,11 @@ public class MainPanel extends javax.swing.JPanel
     private final int RASISE_INT = 0; // for the combo box 
     private final int LOWER_INT = 1; // for the combo box
     
-    private List betNumber;
     private double bankAccount;
     private double betAmount;
-    private double PreBetAmount;
-    private List preBetNumbers;
+    
+    private Game[] games;
+    private Game currentGame;
     
     //*********test
     private RouletteButton test;
@@ -46,6 +41,8 @@ public class MainPanel extends javax.swing.JPanel
         
         //*****test******
          test();
+         createGames();
+         initVariables();
     }
 
     /**
@@ -287,18 +284,6 @@ public class MainPanel extends javax.swing.JPanel
         );
 
         btnPlay.setText("PLAY");
-        
-        //*****************************test**********************
-        //*******************************************************
-        btnPlay.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                btnPlayActionPerformed(evt);
-            }
-        });        
-        //*******************************************************
-        //*******************************************************
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -351,6 +336,32 @@ public class MainPanel extends javax.swing.JPanel
         jPanelGameBoard.setBackground(Color.decode("#137c43"));
     }
     
+    /**
+     * Creates each game for the casino and adds the game to the games array. The size
+     * of the array will be determined by how many games are playable in the game.
+     * 
+     * @return returns a Game[] that was created
+     */
+    private Game[] createGames()
+    {
+    	// Add new games to this array
+    	Game[] temp = 
+    		{
+    			new Roulette("Roulette")
+    		};
+    	
+    	games = temp;
+    	
+    	return games;
+    }
+    
+    private void initVariables()
+    {
+    	games = null;
+    	currentGame = null;
+    	bankAccount = 0;
+    	betAmount = 0;
+    }
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddMoneyActionPerformed
     {//GEN-HEADEREND:event_btnAddMoneyActionPerformed
     	testGame.setUserBet(500);
@@ -394,7 +405,7 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JLabel lblAmountBet;
     private javax.swing.JLabel lblBankBal;
     private javax.swing.JLabel lblCurrentBet;
-    public static javax.swing.JLabel lblResults;
+    private javax.swing.JLabel lblResults;
     private javax.swing.JLabel lblResultsText;
     private javax.swing.JLabel lblSetBet;
     private javax.swing.JLabel lblUserName;
