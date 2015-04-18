@@ -27,6 +27,8 @@ abstract class Game
 	final protected int PANEL_SIZE_X = 900;
 	final protected int PANEL_SIZE_Y = 580;
 	final protected Dimension PANEL_SIZE;
+        protected double maxBet; // for the tables max bet // default: 1000
+        protected double minBet;// for the tables min bet // default: 1
 
 			
 	/**
@@ -44,9 +46,16 @@ abstract class Game
 		makePanel();
 		makeResultsPanel();
 		makeInstructionsPanel();
+                maxBet = 1000;
+                minBet = 1;
 	}
 	
 	// Methods that need to be used in the child class.
+        /**
+         * Plays the game. TReturn null if no game was played
+         * 
+         * @return returns a results string. Null if no game was played
+         */
 	public abstract String playGame();
 	public abstract void resetGame();
 	
@@ -92,6 +101,38 @@ abstract class Game
 		gameInstructionsPanel = makePanel();
 		return gameInstructionsPanel;
 	}
+        
+        /**
+         * Increase the users bet by the amount passed greater than or equal to
+         * 0.
+         * 
+         * @param bet The amount to increase.
+         */
+        public void increaseBet(double bet)
+        {
+            if (bet >= 0)
+            {
+                userBet += bet;
+            }
+        }
+        
+        /**
+         * Decreases the users bet by the amount passed if the amount is greater
+         * than or equal to 0.
+         * 
+         * @param bet The amount to decrease by.
+         */
+        public void decreaseBet(double bet)
+        {
+            if (bet >= 0)
+            {
+                userBet -= bet;
+            }
+            if (userBet < 0) // used if the decrease amount makes the bet negitive
+            {
+                userBet = 0;
+            }
+        }
 	
 	public String getGameName()
 	{
@@ -127,6 +168,16 @@ abstract class Game
 	{
 		return gameResultsPanel;
 	}
+        
+        public double getMaxBet()
+        {
+            return maxBet;
+        }
+
+        public double getMinBet()
+        {
+            return minBet;
+        }
 	
 	public void setGameName(String str)
 	{
@@ -162,6 +213,16 @@ abstract class Game
 	{
 		gameResultsPanel = panel;
 	}
+
+        public void setMaxBet(double bet)
+        {
+                maxBet = bet;
+        }
+
+        public void setMinBet(double bet)
+        {
+            minBet = bet;
+        }
 	
 	public String toString()
 	{

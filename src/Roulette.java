@@ -9,10 +9,14 @@
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -105,7 +109,6 @@ public class Roulette extends Game
 		userPick = null;
 	}
 	
-
 	/**
 	 * Plays the game.
 	 * 
@@ -114,13 +117,14 @@ public class Roulette extends Game
 	public String playGame()
 	{
 		if (ready())
-		{
+		{		
+                        payout = 0;
 			odds = determineOdds();
 			resultNumber = new Random().nextInt(38);
 
 			String result = getResult(didUserWin());
-			resetGame();
-			
+                        resetGame();
+
 			return result;
 		}
 		return null;
@@ -206,6 +210,7 @@ public class Roulette extends Game
 			}
 		}
 		
+                // if the user won
 		if (bool)
 		{
 			payout = userBet + (userBet * odds);
@@ -216,6 +221,7 @@ public class Roulette extends Game
 					+ "Your Bet Amount: " + userBet + "\n"
 					+ "Your Payout: " + payout;
 		}
+                //if the user lost
 		else
 		{
 			payout = 0;
@@ -331,6 +337,8 @@ public class Roulette extends Game
 	/**
 	 * Resets all game variables to the starting state so the variables 
 	 * are ready for another game.
+         * 
+         * ** Do not reset userBet or payout.
 	 * 
 	 */
 	public void resetGame()
@@ -338,9 +346,7 @@ public class Roulette extends Game
 		resultNumber = 0;
 		odds = 0;
 		userPick = null;
-		userBet = 0;
 		result = null;
-		payout = 0;
 	}
 	
 	/**
@@ -359,7 +365,12 @@ public class Roulette extends Game
 		
 		return temp;
 	}
-	
+	        
+        public int[] getUserPick()
+        {
+            return userPick;
+        }
+        
 	/**
 	 * Creates a game board for the roulette game that will allow the user to click 
 	 * buttons on the board to determine where the user wants to bet
@@ -400,6 +411,11 @@ public class Roulette extends Game
 		
 		private final String topN = "/images/btn_line_top.png";
 
+                //****************Test*******************
+                RouletteButton test = new RouletteButton("/images/chip_test.png", 
+                         "/images/chip_test.png", "/images/chip_test.png", RouletteButton.LINE_BUTTON_NOT_CLICKABLE);
+                //*********************************
+                
 		public RouletteGameBoard()
 		{
 		}
@@ -469,7 +485,31 @@ public class Roulette extends Game
 			totalBoard.setBackground(Color.decode("#137c43"));
 			twoToOne.setBackground(Color.decode("#137c43"));
 			
-			return totalBoard;
+                        // ***********TEST****************************
+                        //*********************************************
+                        JLayeredPane gameBoardLayer = new JLayeredPane();
+                        test.setDisabledIcon(new ImageIcon(getClass().getResource("/images/chip_test.png")));
+			test.setEnabled(false);
+                        test.setVisible(true);
+                        JPanel test3 = new JPanel();
+
+                        test3.add(test);
+                        test3.setLayout(new javax.swing.BoxLayout(
+                                    test3, javax.swing.BoxLayout.X_AXIS));
+                        test3.setBounds(0,0,500,500);
+                        gameBoardLayer.add(test3, new Integer(1), 0);
+
+                        //gameBoardLayer.add(test, 1);
+                        totalBoard.setBounds(0, 0, 1400, 800);
+                        gameBoardLayer.add(totalBoard, new Integer(0), 0);                        
+                        JPanel test2 = new JPanel();
+                        test2.add(gameBoardLayer);
+                        test2.setLayout(new javax.swing.BoxLayout(
+                                    test2, javax.swing.BoxLayout.X_AXIS));
+                        //*********************************************                        
+                        //*********************************************
+                        
+			return test2;
 			
 		}
 		
@@ -997,6 +1037,10 @@ public class Roulette extends Game
                             {
                                 RouletteButton b = (RouletteButton) e.getSource();
                                 userPick = b.getNumbers();
+                                
+                                //*******Test********************
+                                test.setLocation(b.getLocation());
+                                //*******************************
                             } 
                             catch (Exception error)
                             {

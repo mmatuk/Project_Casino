@@ -13,17 +13,9 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Label;
 import java.awt.geom.AffineTransform;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.xml.soap.Text;
 
 /**
  *

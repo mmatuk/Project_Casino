@@ -15,7 +15,7 @@ import javax.swing.JFrame;
 
 public class Start 
 {
-	public static void main(String[] args)
+	/*public static void main(String[] args)
 	{
 
             JFrame frm = new JFrame("Project Casino");
@@ -26,6 +26,6 @@ public class Start
             frm.setLocationRelativeTo(null);
             frm.setVisible(true);
 
-	}
+	}*/
 
 }

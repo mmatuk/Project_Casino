@@ -1,4 +1,10 @@
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,13 +21,23 @@ public class MainPanel extends javax.swing.JPanel
 
     private final String RAISE = "RAISE";
     private final String LOWER = "LOWER";
+    private final String BET_AMOUNT = "Bet Amount";
+    
     private final int RASISE_INT = 0; // for the combo box 
     private final int LOWER_INT = 1; // for the combo box
     
+    private final double BET_ONE = 1.00;
+    private final double BET_FIVE = 5.00;
+    private final double BET_TEN = 10.00;    
+    private final double BET_TWENTY_FIVE = 25.00;
+    private final double BET_FIFTY = 50.00;
+    private final double BET_ONE_HUNDRED = 100.00;
+    
     private double bankAccount;
     private double betAmount;
-    
+        
     private Game[] games;
+    
     
     /**
      * Creates new form MainPanel
@@ -34,6 +50,9 @@ public class MainPanel extends javax.swing.JPanel
 
         createGames();
         displayGameBoards();
+        updateCurrentBet();
+        updateBankBal();
+        
     }
 
     /**
@@ -49,7 +68,7 @@ public class MainPanel extends javax.swing.JPanel
         jPanelUserInfo = new javax.swing.JPanel();
         lblUserName = new javax.swing.JLabel();
         lblBankBal = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        lblBal = new javax.swing.JLabel();
         btnAddMoney = new javax.swing.JButton();
         jPanelBetting = new javax.swing.JPanel();
         lblAmountBet = new javax.swing.JLabel();
@@ -57,13 +76,15 @@ public class MainPanel extends javax.swing.JPanel
         lblCurrentBet = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         lblSetBet = new javax.swing.JLabel();
-        txtFieldBet = new java.awt.TextField();
         btnBet10 = new javax.swing.JButton();
         btnBet25 = new javax.swing.JButton();
         btnBet1 = new javax.swing.JButton();
         btnBet5 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnBet100 = new javax.swing.JButton();
+        btnBet50 = new javax.swing.JButton();
+        btnAddBetAmount = new javax.swing.JButton();
+        NumberFormat bettingFormat = NumberFormat.getIntegerInstance();
+        jFormattedTextFieldBetAmount = new javax.swing.JFormattedTextField(bettingFormat);
         jTabbedPaneGames = new javax.swing.JTabbedPane();
         jPanelResults = new javax.swing.JPanel();
         lblResults = new javax.swing.JLabel();
@@ -78,7 +99,7 @@ public class MainPanel extends javax.swing.JPanel
 
         lblBankBal.setText("Current Balance:");
 
-        jLabel1.setText("1000,000");
+        lblBal.setText("1000,000");
 
         btnAddMoney.setText("Add");
         btnAddMoney.addActionListener(new java.awt.event.ActionListener()
@@ -100,8 +121,8 @@ public class MainPanel extends javax.swing.JPanel
                     .addGroup(jPanelUserInfoLayout.createSequentialGroup()
                         .addComponent(lblBankBal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
+                        .addComponent(lblBal, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAddMoney, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -113,8 +134,9 @@ public class MainPanel extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelUserInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblBankBal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAddMoney, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanelUserInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblBal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAddMoney, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -131,11 +153,23 @@ public class MainPanel extends javax.swing.JPanel
 
         lblSetBet.setText("Enter Amount:");
 
-        txtFieldBet.setText("Bet Amount");
-
         btnBet10.setText("$10");
+        btnBet10.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnBet10ActionPerformed(evt);
+            }
+        });
 
         btnBet25.setText("$25");
+        btnBet25.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnBet25ActionPerformed(evt);
+            }
+        });
 
         btnBet1.setText("$1");
         btnBet1.addActionListener(new java.awt.event.ActionListener()
@@ -147,10 +181,50 @@ public class MainPanel extends javax.swing.JPanel
         });
 
         btnBet5.setText("$5");
+        btnBet5.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnBet5ActionPerformed(evt);
+            }
+        });
 
-        jButton5.setText("$100");
+        btnBet100.setText("$100");
+        btnBet100.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnBet100ActionPerformed(evt);
+            }
+        });
 
-        jButton6.setText("$50");
+        btnBet50.setText("$50");
+        btnBet50.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnBet50ActionPerformed(evt);
+            }
+        });
+
+        btnAddBetAmount.setText("Add");
+        btnAddBetAmount.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnAddBetAmountActionPerformed(evt);
+            }
+        });
+
+        jFormattedTextFieldBetAmount.setToolTipText("");
+        jFormattedTextFieldBetAmount.setValue(new Integer(500));
+        jFormattedTextFieldBetAmount.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jFormattedTextFieldBetAmountMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelBettingLayout = new javax.swing.GroupLayout(jPanelBetting);
         jPanelBetting.setLayout(jPanelBettingLayout);
@@ -158,56 +232,63 @@ public class MainPanel extends javax.swing.JPanel
             jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBettingLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelBettingLayout.createSequentialGroup()
                         .addComponent(lblAmountBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblCurrentBet))
+                        .addComponent(lblCurrentBet, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE))
                     .addComponent(comboRasieLow, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnBet10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblSetBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnBet25, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                    .addComponent(txtFieldBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanelBettingLayout.createSequentialGroup()
+                        .addComponent(lblSetBet)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jFormattedTextFieldBetAmount))
+                    .addGroup(jPanelBettingLayout.createSequentialGroup()
+                        .addComponent(btnBet1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBet5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnBet1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnBet5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelBettingLayout.createSequentialGroup()
+                        .addComponent(btnBet10, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBet25, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBet50, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBet100, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAddBetAmount))
+                .addContainerGap())
         );
         jPanelBettingLayout.setVerticalGroup(
             jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBettingLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1)
                     .addGroup(jPanelBettingLayout.createSequentialGroup()
+                        .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblSetBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblCurrentBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblAmountBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnAddBetAmount)
+                                .addComponent(jFormattedTextFieldBetAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(12, 12, 12)
                         .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(lblSetBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtFieldBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblCurrentBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblAmountBet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnBet1)
-                                .addComponent(btnBet5)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnBet10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnBet25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton5)
-                                .addComponent(comboRasieLow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton6)))))
+                            .addComponent(comboRasieLow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelBettingLayout.createSequentialGroup()
+                                .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnBet1)
+                                    .addComponent(btnBet5)
+                                    .addComponent(btnBet10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnBet25)
+                                    .addComponent(btnBet100)
+                                    .addComponent(btnBet50))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
 
@@ -257,7 +338,7 @@ public class MainPanel extends javax.swing.JPanel
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPaneGames)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanelUserInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanelUserInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanelBetting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -293,8 +374,9 @@ public class MainPanel extends javax.swing.JPanel
     }
 
     /**
-     * Creates each game for the casino and adds the game to the games array. The size
-     * of the array will be determined by how many games are playable in the game.
+     * Creates each game for the casino and adds the game to the games array. 
+     * The size of the array will be determined by how many games are playable 
+     * in the game.
      * 
      * @return returns a Game[] that was created
      */
@@ -311,6 +393,9 @@ public class MainPanel extends javax.swing.JPanel
     	return games;
     }
     
+    /**
+     * Sets all game variables to null or 0.
+     */
     private void initVariables()
     {
     	games = null;
@@ -318,12 +403,49 @@ public class MainPanel extends javax.swing.JPanel
     	betAmount = 0;
     }
     
+    /**
+     * Sets up all the game boards by using the games array to get each created 
+     * panel and adding that panel to the JTabbedPaneGames panel.
+     */
     private void displayGameBoards()
     {
         for (Game game : games)
         {
             jTabbedPaneGames.add(game.getGameName(), game.getGamePanel());
         }
+    }
+    
+    /**
+     * Displays the current users bet using lblCurrentBet
+     * 
+     */
+    private void updateCurrentBet()
+    {
+        DecimalFormat currency = new DecimalFormat("$###,###.##");
+        lblCurrentBet.setText(
+                currency.format(games[jTabbedPaneGames.getSelectedIndex()].getUserBet()));
+   }
+    
+    /**
+     * Displays the users current bank balance
+     */
+    private void updateBankBal()
+    {
+        DecimalFormat currency = new DecimalFormat("$###,###.##");
+        lblBal.setText(currency.format(bankAccount));
+    }
+    
+    /**
+     * Displays the bank amount after increasing or decreasing the amount 
+     * by the double that is passed.
+     * 
+     * @param amount Amount to add to the bank account balance.
+     */
+    private void updateBankBal(double amount)
+    {
+        bankAccount += amount;
+        DecimalFormat currency = new DecimalFormat("$###,###.##");
+        lblBal.setText(currency.format(bankAccount));
     }
     
     private void btnAddMoneyActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddMoneyActionPerformed
@@ -333,38 +455,159 @@ public class MainPanel extends javax.swing.JPanel
 
     private void btnBet1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBet1ActionPerformed
     {//GEN-HEADEREND:event_btnBet1ActionPerformed
-        // TODO add your handling code here:
+        if (comboRasieLow.getSelectedIndex() == RASISE_INT)
+        {
+            games[jTabbedPaneGames.getSelectedIndex()].increaseBet(BET_ONE);
+        }
+        else
+        {
+            games[jTabbedPaneGames.getSelectedIndex()].decreaseBet(BET_ONE);
+        }
+        updateCurrentBet();
     }//GEN-LAST:event_btnBet1ActionPerformed
 
+    /**
+     * When the play button is pressed, the currently displayed tabs game is 
+     * played.
+     * 
+     * @param evt The play button event.
+     */
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnPlayActionPerformed
     {//GEN-HEADEREND:event_btnPlayActionPerformed
-        games[jTabbedPaneGames.getSelectedIndex()].playGame();
+        double preBetAmount = 
+                games[jTabbedPaneGames.getSelectedIndex()].getUserBet();
+        String wasGamePlayed = games[jTabbedPaneGames.getSelectedIndex()].playGame();
+        
+        // if the game was played. null means no game played
+        if (wasGamePlayed != null)
+        {
+            updateBankBal(-preBetAmount);
+            lblResultsText.setText(wasGamePlayed);
+            updateBankBal(games[jTabbedPaneGames.getSelectedIndex()].getPayout());
+        }
     }//GEN-LAST:event_btnPlayActionPerformed
+
+    private void btnBet5ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBet5ActionPerformed
+    {//GEN-HEADEREND:event_btnBet5ActionPerformed
+        if (comboRasieLow.getSelectedIndex() == RASISE_INT)
+        {
+            games[jTabbedPaneGames.getSelectedIndex()].increaseBet(BET_FIVE);
+        }
+        else
+        {
+            games[jTabbedPaneGames.getSelectedIndex()].decreaseBet(BET_FIVE);
+        }
+        updateCurrentBet();
+    }//GEN-LAST:event_btnBet5ActionPerformed
+
+    private void btnBet10ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBet10ActionPerformed
+    {//GEN-HEADEREND:event_btnBet10ActionPerformed
+        if (comboRasieLow.getSelectedIndex() == RASISE_INT)
+        {
+            games[jTabbedPaneGames.getSelectedIndex()].increaseBet(BET_TEN);
+        }
+        else
+        {
+            games[jTabbedPaneGames.getSelectedIndex()].decreaseBet(BET_TEN);
+        }
+        updateCurrentBet();
+    }//GEN-LAST:event_btnBet10ActionPerformed
+
+    private void btnBet25ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBet25ActionPerformed
+    {//GEN-HEADEREND:event_btnBet25ActionPerformed
+        if (comboRasieLow.getSelectedIndex() == RASISE_INT)
+        {
+            games[jTabbedPaneGames.getSelectedIndex()].increaseBet(BET_TWENTY_FIVE);
+        }
+        else
+        {
+            games[jTabbedPaneGames.getSelectedIndex()].decreaseBet(BET_TWENTY_FIVE);
+        }
+        updateCurrentBet();
+    }//GEN-LAST:event_btnBet25ActionPerformed
+
+    private void btnBet50ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBet50ActionPerformed
+    {//GEN-HEADEREND:event_btnBet50ActionPerformed
+        if (comboRasieLow.getSelectedIndex() == RASISE_INT)
+        {
+            games[jTabbedPaneGames.getSelectedIndex()].increaseBet(BET_FIFTY);
+        }
+        else
+        {
+            games[jTabbedPaneGames.getSelectedIndex()].decreaseBet(BET_FIFTY);
+        }
+        updateCurrentBet();
+    }//GEN-LAST:event_btnBet50ActionPerformed
+
+    private void btnBet100ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBet100ActionPerformed
+    {//GEN-HEADEREND:event_btnBet100ActionPerformed
+        if (comboRasieLow.getSelectedIndex() == RASISE_INT)
+        {
+            games[jTabbedPaneGames.getSelectedIndex()].increaseBet(BET_ONE_HUNDRED);
+        }
+        else
+        {
+            games[jTabbedPaneGames.getSelectedIndex()].decreaseBet(BET_ONE_HUNDRED);
+        }
+        updateCurrentBet();
+    }//GEN-LAST:event_btnBet100ActionPerformed
+
+    private void jFormattedTextFieldBetAmountMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jFormattedTextFieldBetAmountMouseClicked
+    {//GEN-HEADEREND:event_jFormattedTextFieldBetAmountMouseClicked
+        jFormattedTextFieldBetAmount.setValue(null);
+    }//GEN-LAST:event_jFormattedTextFieldBetAmountMouseClicked
+
+    private void btnAddBetAmountActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnAddBetAmountActionPerformed
+    {//GEN-HEADEREND:event_btnAddBetAmountActionPerformed
+        // if bet entered is not empty
+        if (!jFormattedTextFieldBetAmount.getText().equalsIgnoreCase(""))
+        {
+            String onlyNumbers = 
+                    jFormattedTextFieldBetAmount.getText().replaceAll("[,]", "");
+            double bet = Double.parseDouble(onlyNumbers);
+            
+            if (bet <= games[jTabbedPaneGames.getSelectedIndex()].getMaxBet())
+            {
+                games[jTabbedPaneGames.getSelectedIndex()].setUserBet(bet);
+                updateCurrentBet();
+            }
+            else
+            {
+                NumberFormat currency = NumberFormat.getCurrencyInstance();
+                JOptionPane.showMessageDialog(btnAddBetAmount, "Please enter an "
+                        + "amount lower than the tables max bet. This tables max "
+                        + "bet is " 
+                        + currency.format(
+                                games[jTabbedPaneGames.getSelectedIndex()].getMaxBet()));
+            }
+        }
+    }//GEN-LAST:event_btnAddBetAmountActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddBetAmount;
     private javax.swing.JButton btnAddMoney;
     private javax.swing.JButton btnBet1;
     private javax.swing.JButton btnBet10;
+    private javax.swing.JButton btnBet100;
     private javax.swing.JButton btnBet25;
     private javax.swing.JButton btnBet5;
+    private javax.swing.JButton btnBet50;
     private javax.swing.JButton btnPlay;
     private javax.swing.JComboBox comboRasieLow;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JFormattedTextField jFormattedTextFieldBetAmount;
     private javax.swing.JPanel jPanelBetting;
     private javax.swing.JPanel jPanelResults;
     private javax.swing.JPanel jPanelUserInfo;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPaneGames;
     private javax.swing.JLabel lblAmountBet;
+    private javax.swing.JLabel lblBal;
     private javax.swing.JLabel lblBankBal;
     private javax.swing.JLabel lblCurrentBet;
     private javax.swing.JLabel lblResults;
     private javax.swing.JLabel lblResultsText;
     private javax.swing.JLabel lblSetBet;
     private javax.swing.JLabel lblUserName;
-    private java.awt.TextField txtFieldBet;
     // End of variables declaration//GEN-END:variables
 }
