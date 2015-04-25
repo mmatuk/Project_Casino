@@ -139,6 +139,24 @@ public class RouletteButton extends JButton
     	setVerticalTextPosition(JButton.CENTER);
     }
     
+    /**
+     * Gets all the values in the numbers array and returns a string that 
+     * contains the numbers
+     * 
+     * @return The string that contains all the values in the numbers array. 
+     */
+    public String getNumbersToString()
+    {
+        String result = "";
+        
+        for (int num = 0; num < numbers.length; num++)
+        {
+            result += numbers[num] + ((num == numbers.length-1) ? "" : ", ");
+        }
+        
+        return result;
+    }
+    
     public String toString()
     {
     	String temp = "";

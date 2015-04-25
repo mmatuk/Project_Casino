@@ -93,6 +93,7 @@ public class MainPanel extends javax.swing.JPanel
 
         setPreferredSize(new java.awt.Dimension(1400, 829));
 
+        jPanelUserInfo.setBackground(new java.awt.Color(204, 204, 204));
         jPanelUserInfo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         lblUserName.setText("Matt Matuk");
@@ -141,6 +142,7 @@ public class MainPanel extends javax.swing.JPanel
         );
 
         jPanelBetting.setBackground(new java.awt.Color(204, 204, 204));
+        jPanelBetting.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         lblAmountBet.setText("Amount Betting:");
 
@@ -279,15 +281,13 @@ public class MainPanel extends javax.swing.JPanel
                         .addGap(12, 12, 12)
                         .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(comboRasieLow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanelBettingLayout.createSequentialGroup()
-                                .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnBet1)
-                                    .addComponent(btnBet5)
-                                    .addComponent(btnBet10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnBet25)
-                                    .addComponent(btnBet100)
-                                    .addComponent(btnBet50))
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(jPanelBettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnBet1)
+                                .addComponent(btnBet5)
+                                .addComponent(btnBet10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnBet25)
+                                .addComponent(btnBet100)
+                                .addComponent(btnBet50))))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
