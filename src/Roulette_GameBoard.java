@@ -3,7 +3,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDesktopPane;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -60,7 +63,6 @@ public class Roulette_GameBoard extends javax.swing.JPanel
         jPanelNumberPickArea.setBackground(
                 jPanelNumberPickArea.getComponent(0).getBackground());
         jPanelGameBoard.setBackground(jPanelNumberPickArea.getBackground());
-        
     }
 
     /**
@@ -75,41 +77,33 @@ public class Roulette_GameBoard extends javax.swing.JPanel
 
         jPanelGameBoard = new javax.swing.JPanel();
         jPanelNumberPickArea = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jComboBox1 = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
         lblNumbersPicked = new javax.swing.JLabel();
-        lblMaxBet = new javax.swing.JLabel();
-        lblMinBet = new javax.swing.JLabel();
         lblNumbersPickedDisplay = new javax.swing.JLabel();
-        lblMaxBetDisplay = new javax.swing.JLabel();
-        lblMinBetDisplay = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        lblBetAmount = new javax.swing.JLabel();
+        betAmount = new javax.swing.JLabel();
 
-        jPanelNumberPickArea.setLayout(new javax.swing.BoxLayout(jPanelNumberPickArea, javax.swing.BoxLayout.LINE_AXIS));
+        jPanelGameBoard.setBackground(new java.awt.Color(51, 102, 0));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Temp area for wheel picture");
-        jScrollPane1.setViewportView(jTextArea1);
+        jPanelNumberPickArea.setLayout(new javax.swing.OverlayLayout(jPanelNumberPickArea));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel1.setText("Table:");
-
+        lblNumbersPicked.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblNumbersPicked.setForeground(new java.awt.Color(255, 255, 255));
         lblNumbersPicked.setText("Numbers Picked:");
 
-        lblMaxBet.setText("Max Bet:");
-
-        lblMinBet.setText("Min Bet:");
-
+        lblNumbersPickedDisplay.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblNumbersPickedDisplay.setForeground(new java.awt.Color(255, 255, 255));
         lblNumbersPickedDisplay.setText("Pick Number");
 
-        lblMaxBetDisplay.setText("jLabel6");
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/wheel_copyright_001.png"))); // NOI18N
 
-        lblMinBetDisplay.setText("jLabel7");
+        lblBetAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblBetAmount.setForeground(new java.awt.Color(255, 255, 255));
+        lblBetAmount.setText("Current Bet:");
+
+        betAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        betAmount.setForeground(new java.awt.Color(255, 255, 255));
+        betAmount.setText("$0");
 
         javax.swing.GroupLayout jPanelGameBoardLayout = new javax.swing.GroupLayout(jPanelGameBoard);
         jPanelGameBoard.setLayout(jPanelGameBoardLayout);
@@ -117,53 +111,39 @@ public class Roulette_GameBoard extends javax.swing.JPanel
             jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelGameBoardLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelGameBoardLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanelNumberPickArea, javax.swing.GroupLayout.PREFERRED_SIZE, 930, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanelGameBoardLayout.createSequentialGroup()
-                                .addComponent(lblNumbersPicked)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblNumbersPickedDisplay))
-                            .addGroup(jPanelGameBoardLayout.createSequentialGroup()
-                                .addComponent(lblMaxBet)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblMaxBetDisplay)
-                                .addGap(90, 90, 90)
-                                .addComponent(lblMinBet)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblMinBetDisplay))))
+                        .addComponent(jPanelNumberPickArea, javax.swing.GroupLayout.PREFERRED_SIZE, 930, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 2, Short.MAX_VALUE))
                     .addGroup(jPanelGameBoardLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGap(17, 17, 17)
+                        .addComponent(lblBetAmount)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(betAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblNumbersPicked)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblNumbersPickedDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanelGameBoardLayout.setVerticalGroup(
             jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGameBoardLayout.createSequentialGroup()
-                .addGap(47, 47, 47)
+                .addContainerGap(93, Short.MAX_VALUE)
                 .addGroup(jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblNumbersPicked)
+                    .addComponent(lblNumbersPickedDisplay)
+                    .addComponent(lblBetAmount)
+                    .addComponent(betAmount))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelGameBoardLayout.createSequentialGroup()
-                        .addGroup(jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblNumbersPicked)
-                            .addComponent(lblNumbersPickedDisplay))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblMaxBet)
-                            .addComponent(lblMinBet)
-                            .addComponent(lblMaxBetDisplay)
-                            .addComponent(lblMinBetDisplay))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanelNumberPickArea, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1))
+                .addComponent(jPanelNumberPickArea, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50))
+            .addGroup(jPanelGameBoardLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -777,7 +757,7 @@ public class Roulette_GameBoard extends javax.swing.JPanel
                     if (b.getNumbers() != RouletteButton.LINE_BUTTON_NOT_CLICKABLE)
                     {
                         Roulette.setUserPick(b.getNumbers());
-                        lblNumbersPickedDisplay.setText(b.getNumbersToString()+"");
+                        lblNumbersPickedDisplay.setText(Roulette.determinePickText());
                     }
                 } 
                 catch (Exception error)
@@ -823,20 +803,36 @@ public class Roulette_GameBoard extends javax.swing.JPanel
     {
         this.lblNumbersPickedDisplay = lblNumbersPickedDisplay;
     }
+
+    public JLabel getBetAmount()
+    {
+        return betAmount;
+    }
+
+    public void setBetAmount(JLabel betAmount)
+    {
+        this.betAmount = betAmount;
+    }
+
+    public JLabel getLblBetAmount()
+    {
+        return lblBetAmount;
+    }
+
+    public void setLblBetAmount(JLabel lblBetAmount)
+    {
+        this.lblBetAmount = lblBetAmount;
+    }
+    
     
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel betAmount;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanelGameBoard;
     private javax.swing.JPanel jPanelNumberPickArea;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JLabel lblMaxBet;
-    private javax.swing.JLabel lblMaxBetDisplay;
-    private javax.swing.JLabel lblMinBet;
-    private javax.swing.JLabel lblMinBetDisplay;
+    private javax.swing.JLabel lblBetAmount;
     private javax.swing.JLabel lblNumbersPicked;
     private javax.swing.JLabel lblNumbersPickedDisplay;
     // End of variables declaration//GEN-END:variables

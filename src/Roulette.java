@@ -10,6 +10,7 @@
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -77,9 +78,9 @@ public class Roulette extends Game
 	
 	public final static String TWO_TEXT = "2 to 1";
 	public final static String TWO_TOP_TEXT = "2 to 1 Top";
-	public final static String TWO_TOP_MID_TEXT = "2 to 1 Between Top and Middle";
+	public final static String TWO_TOP_MID_TEXT = "2 to 1 Top and Middle";
 	public final static String TWO_MID_TEXT = "2 to 1 Middle";
-	public final static String TWO_MID_BOTTOM_TEXT = "2 to 1 Between Middle and Bottom";
+	public final static String TWO_MID_BOTTOM_TEXT = "2 to 1 Middle and Bottom";
 	public final static String TWO_BOTTOM_TEXT = "2 to 1 Bottom";
 	public final static String FIRST_TWELVE_TEXT = "1st 12";
 	public final static String SECOND_TWELVE_TEXT = "2nd 12";
@@ -94,6 +95,14 @@ public class Roulette extends Game
 	private int resultNumber;
 	private double odds;
 	private static int[] userPick;
+        
+        private String winNum;
+        private String winColor;
+        private String userNum;
+        private String userColor;
+        private String userBetAmount;
+        private String userWinLose; 
+        private String userWinLoseAmount;
 	
 	public Roulette(String name)
 	{
@@ -102,6 +111,14 @@ public class Roulette extends Game
 		resultNumber = 0;
 		odds = 0;
 		userPick = null;
+                
+                winNum = null;
+                winColor = null;
+                userNum = null;
+                userColor = null;
+                userBetAmount = null;
+                userWinLose = null; 
+                userWinLoseAmount = null;
 	}
 	
 	/**
@@ -117,7 +134,9 @@ public class Roulette extends Game
 			odds = determineOdds();
 			resultNumber = new Random().nextInt(38);
 
-			String result = getResult(didUserWin());
+			String result = getResult(didUserWin()); 
+                        
+                        displayResults();
                         resetGame();
 
 			return result;
@@ -133,7 +152,81 @@ public class Roulette extends Game
                 Roulette_GameBoard board = new Roulette_GameBoard();
 		return gamePanel = board;
 	}
-	
+        
+	/**
+         * Creates the results game panel that will be used for the Roulette game.
+         * 
+         * @return The panel created.
+         */
+        @Override
+        public JPanel makeResultsPanel()
+        {
+            gameResultsPanel = new Roulette_Results();
+            return gameResultsPanel;
+        }
+        
+        /**
+         * Increase the bet amount and changes the label for the bet in the game
+         * board.
+         * 
+         * @param bet Amount to increase.
+         */
+        @Override
+        public void increaseBet(double bet)
+        {
+            DecimalFormat format = new DecimalFormat("$###,###.##");
+            
+            if (bet >= 0)
+            {
+                userBet += bet;
+                
+                Roulette_GameBoard tmp = (Roulette_GameBoard) gamePanel;
+                tmp.getBetAmount().setText(format.format(userBet));
+
+            }
+        }
+        
+        /**
+         * Decreases the users bet by the amount passed if the amount is greater
+         * than or equal to 0.
+         * 
+         * @param bet The amount to decrease by.
+         */
+        @Override
+        public void decreaseBet(double bet)
+        {
+            DecimalFormat format = new DecimalFormat("$###,###.##");
+
+            if (bet >= 0)
+            {
+                userBet -= bet;
+            }
+            if (userBet < 0) // used if the decrease amount makes the bet negitive
+            {
+                userBet = 0;
+            }
+            
+            Roulette_GameBoard tmp = (Roulette_GameBoard) gamePanel;
+            tmp.getBetAmount().setText(format.format(userBet));
+        }
+        
+        public void setUserBet(double bet)
+        {
+            DecimalFormat format = new DecimalFormat("$###,###.##");
+
+            if (bet >= 0)
+            {
+                userBet = bet;
+            }
+            else // used if the decrease amount makes the bet negitive
+            {
+                userBet = 0;
+            }
+            
+            Roulette_GameBoard tmp = (Roulette_GameBoard) gamePanel;
+            tmp.getBetAmount().setText(format.format(userBet));
+        }
+        
 	/**
 	 * Sets the odds for the current game based off the size of 
 	 * the userPick array. 
@@ -184,11 +277,17 @@ public class Roulette extends Game
 		return false;
 	}
 	
+        /**
+         * Sets all the string and log text for the current that that was played.\
+         * 
+         * @param bool If the user won or lost
+         * 
+         * @return Log string created.
+         */
 	private String getResult(boolean bool)
 	{
 		String result;
 		String userPickedText = determinePickText();
-		String redOrBlack = "";
 		
 		if (resultNumber != 0 && resultNumber != 37)
 		{
@@ -196,39 +295,66 @@ public class Roulette extends Game
 			{
 				if (num == resultNumber)
 				{
-					redOrBlack = "BLACK";
+					winColor = "BLACK";
 				}
 			}
 			
-			if (redOrBlack.equals(""))
+			if (winColor == null)
 			{
-				redOrBlack = "RED";
+				winColor = "RED";
+			}
+		}
+                
+                // Find Color for user numbers.
+                if (userPick.length == 1)
+		{
+			for (int num : BLACK_NUM)
+			{
+				if (num == userPick[0])
+				{
+					userColor = "BLACK";
+				}
+			}
+			
+			if (userColor == null)
+			{
+				userColor = "RED";
 			}
 		}
 		
+                winNum = (resultNumber == 37 ? "00" : String.valueOf(resultNumber));
+                userNum = userPickedText;
+                userBetAmount = String.valueOf(userBet);
+                
+                        
                 // if the user won
 		if (bool)
-		{
-			payout = userBet + (userBet * odds);
-			result = "YOU WIN!!!\n"
-					+ "Your Numbers Picked: " + userPickedText + "\n"
-					+ "Game Number: " + (resultNumber == 37 ? "00" : resultNumber) 
-						+ " " +redOrBlack + "\n"
-					+ "Your Bet Amount: " + userBet + "\n"
-					+ "Your Payout: " + payout;
-		}
+                {  
+                    userWinLose = "WON";
+                    payout = userBet + (userBet * odds);
+                    userWinLoseAmount = String.valueOf(payout);
+                    
+                    result = "won\t"
+                            + "user num: " + userPickedText + "\t"
+                            + "win num: " + (resultNumber == 37 ? "00" : resultNumber) 
+						+ " " +winColor + "\t"
+					+ "bet: " + userBet + "\t"
+					+ "payout: " + payout;
+		}	                
                 //if the user lost
-		else
-		{
-			payout = 0;
-			result = "YOU LOSE!!!\n"
-					+ "Your Numbers Picked: " + userPickedText + "\n"
-					+ "Game Number: " + (resultNumber == 37 ? "00" : resultNumber) 
-						+ " "+ redOrBlack + "\n"
-					+ "Your Bet Amount: " + userBet + "\n"
-					+ "Your Payout: " + payout;
-		}
-		
+                else
+                {
+                    userWinLose = "LOSE";
+                    userWinLoseAmount = String.valueOf(userBet);
+                    payout = 0;
+                    
+                    result = "lose\t"
+                            + "user num: " + userPickedText + "\t"
+                            + "win num: " + (resultNumber == 37 ? "00" : resultNumber)
+                            + " "+ winColor + "\t" 
+                            + "bet:" + userBet + "\t"
+                            + "payout: " + payout;
+                }
 		return result;
 	}
 	
@@ -238,7 +364,7 @@ public class Roulette extends Game
 	 *  
 	 * @return The text for the number picked. Null if user picked a number without text.
 	 */
-	private String determinePickText()
+	public static String determinePickText()
 	{
 		if (userPick == BLACK_NUM)
 		{
@@ -343,10 +469,19 @@ public class Roulette extends Game
 		odds = 0;
 		userPick = null;
 		result = null;
+                                
+                winNum = null;
+                winColor = null;
+                userNum = null;
+                userColor = null;
+                userBetAmount = null;
+                userWinLose = null; 
+                userWinLoseAmount = null;
                 
                 // clears the text for the user picked numbers after the game is played
                 Roulette_GameBoard tempPanel = (Roulette_GameBoard) gamePanel;
                 tempPanel.getLblNumbersPickedDisplay().setText("Pick Number");
+                tempPanel.getBetAmount().setText("$0");
 	}
 	
 	/**
@@ -372,6 +507,31 @@ public class Roulette extends Game
 		return true;
 	}
 	        
+        private void displayResults()
+        {
+            
+            Roulette_Results tmp = (Roulette_Results) gameResultsPanel;
+            
+            // pre game
+            tmp.getPreWinNum().setText(tmp.getWinNum().getText());
+            tmp.getPreWinColor().setText(tmp.getWinColor().getText());
+            tmp.getPreUserNum().setText(tmp.getUserNum().getText());
+            tmp.getPreUserColor().setText(tmp.getUserColor().getText());
+            tmp.getPreUserBetAmount().setText(tmp.getUserBetAmount().getText());
+            tmp.getPreAmountWonLose().setText(tmp.getAmountWonLose().getText());
+            tmp.getLblPreWinLose().setText(tmp.getLblWinLose().getText());
+            
+            // current game
+            tmp.getWinNum().setText(winNum);
+            tmp.getWinColor().setText(winColor);
+            tmp.getUserNum().setText(userNum);
+            tmp.getUserColor().setText(userColor);
+            tmp.getUserBetAmount().setText(userBetAmount);
+            tmp.getAmountWonLose().setText(userWinLoseAmount);
+            tmp.getLblWinLose().setText(userWinLose + ":");
+            
+        }
+        
         public int[] getUserPick()
         {
             return userPick;

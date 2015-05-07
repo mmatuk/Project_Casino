@@ -9,6 +9,10 @@
 //
 //		** Game board Panel created must be 900x580 in size. **
 //
+//  2. Results Panel
+//
+//      -- size 1272,70
+//
 //******************************************************************************
 
 import java.awt.Dimension;

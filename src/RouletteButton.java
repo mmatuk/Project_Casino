@@ -60,7 +60,8 @@ public class RouletteButton extends JButton
         {
         	addNumberText();
         }
-        
+       
+        setToolTipText(getNumbersToString(6));
     }
     
     private void setButton()
@@ -143,17 +144,36 @@ public class RouletteButton extends JButton
      * Gets all the values in the numbers array and returns a string that 
      * contains the numbers
      * 
+     * @param numPerLine Amount of numbers per line. -1 means one line.
      * @return The string that contains all the values in the numbers array. 
      */
-    public String getNumbersToString()
+    public String getNumbersToString(int numPerLine)
     {
-        String result = "";
+        String result = "<html>";
         
-        for (int num = 0; num < numbers.length; num++)
+        if (numPerLine == -1)
         {
-            result += numbers[num] + ((num == numbers.length-1) ? "" : ", ");
+            for (int num = 0; num < numbers.length; num++)
+            {
+                result += numbers[num] + ((num == numbers.length-1) ? "" : ", ");
+            }
         }
-        
+        else 
+        {
+            result += "Numbers:<br>";
+            for (int num = 1; num <= numbers.length; num++)
+            {
+                if (num % numPerLine == 0)
+                {
+                    result += numbers[num-1] + "<br>";
+                }
+                else
+                {
+                    result += numbers[num-1] + ((num == numbers.length) ? "" : ", ");
+                }
+            }
+        }
+        result += "</html>";
         return result;
     }
     
