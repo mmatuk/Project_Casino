@@ -469,6 +469,7 @@ public class Roulette extends Game
 		odds = 0;
 		userPick = null;
 		result = null;
+                userBet = 0;
                                 
                 winNum = null;
                 winColor = null;
@@ -482,6 +483,7 @@ public class Roulette extends Game
                 Roulette_GameBoard tempPanel = (Roulette_GameBoard) gamePanel;
                 tempPanel.getLblNumbersPickedDisplay().setText("Pick Number");
                 tempPanel.getBetAmount().setText("$0");
+                tempPanel.clearCurrentNumberButton();
 	}
 	
 	/**
@@ -541,4 +543,5 @@ public class Roulette extends Game
         {
             userPick = pick;
         }
+        
 }

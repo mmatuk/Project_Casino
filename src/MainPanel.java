@@ -1,8 +1,8 @@
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 
 
 
@@ -35,10 +35,10 @@ public class MainPanel extends javax.swing.JPanel
     
     private String userName = "Matt Matuk";
     
-    private double bankAccount;
-    private double betAmount;
+    private static double bankAccount;
+    private static double betAmount;
         
-    private Game[] games;
+    private static Game[] games;
     
     
     /**
@@ -229,7 +229,7 @@ public class MainPanel extends javax.swing.JPanel
             }
         });
 
-        btnAddBetAmount.setText("Add");
+        btnAddBetAmount.setText("Set");
         btnAddBetAmount.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -380,8 +380,8 @@ public class MainPanel extends javax.swing.JPanel
                     .addComponent(jPanelUserInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanelBetting, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPaneGames, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTabbedPaneGames, javax.swing.GroupLayout.DEFAULT_SIZE, 627, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnPlay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanelResults, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -460,7 +460,7 @@ public class MainPanel extends javax.swing.JPanel
      * Displays the current users bet using lblCurrentBet
      * 
      */
-    private void updateCurrentBet()
+    public static void updateCurrentBet()
     {
         DecimalFormat currency = new DecimalFormat("$###,###.##");
 
@@ -504,7 +504,7 @@ public class MainPanel extends javax.swing.JPanel
      * 
      * @return true if bankAcount is not equal to 0
      */
-    private boolean doesUserHaveMoney()
+    public static boolean doesUserHaveMoney()
     {
         if (bankAccount == 0 || (bankAccount - betAmount < 0))
         {
@@ -641,20 +641,8 @@ public class MainPanel extends javax.swing.JPanel
                     jFormattedTextFieldBetAmount.getText().replaceAll("[,]", "");
             double bet = Double.parseDouble(onlyNumbers);
             
-            if (bet <= games[jTabbedPaneGames.getSelectedIndex()].getMaxBet())
-            {
-                games[jTabbedPaneGames.getSelectedIndex()].setUserBet(bet);
-                updateCurrentBet();
-            }
-            else
-            {
-                NumberFormat currency = NumberFormat.getCurrencyInstance();
-                JOptionPane.showMessageDialog(btnAddBetAmount, "Please enter an "
-                        + "amount lower than the tables max bet. This tables max "
-                        + "bet is " 
-                        + currency.format(
-                                games[jTabbedPaneGames.getSelectedIndex()].getMaxBet()));
-            }
+            betAmount = bet;
+            updateCurrentBet();
         }
     }//GEN-LAST:event_btnAddBetAmountActionPerformed
 
@@ -686,18 +674,48 @@ public class MainPanel extends javax.swing.JPanel
             else
             {
                 games[jTabbedPaneGames.getSelectedIndex()].setUserBet(betAmount);
-                betAmount = 0;
                 updateCurrentBet();
             }
         }
     }//GEN-LAST:event_btnBetActionPerformed
 
+    /**
+     * Changes the username of the player.
+     *
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
     {//GEN-HEADEREND:event_jButton1ActionPerformed
         String userName = (String) JOptionPane.showInputDialog(jTabbedPaneGames, "Please enter a new name.", "NAME");
-        lblUserName.setText(userName);
+        if (userName != null)
+        {
+            lblUserName.setText(userName);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public static double getBetAmount()
+    {
+        
+        return betAmount;
+    }
+
+    public static void setBetAmount(double bet)
+    {
+        betAmount = bet;
+    }
+
+    public static JTabbedPane getjTabbedPaneGames()
+    {
+        return jTabbedPaneGames;
+    }
+    
+    public static Game[] getGames()
+    {
+        return games;
+    }
+
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddBetAmount;
@@ -718,11 +736,11 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JPanel jPanelUserInfo;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTabbedPane jTabbedPaneGames;
+    private static javax.swing.JTabbedPane jTabbedPaneGames;
     private javax.swing.JLabel lblAmountBet;
     private javax.swing.JLabel lblBal;
     private javax.swing.JLabel lblBankBal;
-    private javax.swing.JLabel lblCurrentBet;
+    private static javax.swing.JLabel lblCurrentBet;
     private javax.swing.JLabel lblSetBet;
     private javax.swing.JLabel lblUserName;
     // End of variables declaration//GEN-END:variables

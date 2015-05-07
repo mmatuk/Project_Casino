@@ -2,6 +2,7 @@
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseListener;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -52,6 +53,9 @@ public class Roulette_GameBoard extends javax.swing.JPanel
     private final String verP = "/images/btn_line_ver_number_pressed.png";
 
     private final String topN = "/images/btn_line_top.png";
+    
+    private Icon btnCurrentNumberDefaultIcon;
+    private RouletteButton btnCurrentNumber;
 
     /**
      * Creates new form Roulette_GameBoard
@@ -63,6 +67,9 @@ public class Roulette_GameBoard extends javax.swing.JPanel
         jPanelNumberPickArea.setBackground(
                 jPanelNumberPickArea.getComponent(0).getBackground());
         jPanelGameBoard.setBackground(jPanelNumberPickArea.getBackground());
+        
+        btnCurrentNumberDefaultIcon = null;
+        btnCurrentNumber = null;
     }
 
     /**
@@ -131,7 +138,7 @@ public class Roulette_GameBoard extends javax.swing.JPanel
         jPanelGameBoardLayout.setVerticalGroup(
             jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGameBoardLayout.createSequentialGroup()
-                .addContainerGap(93, Short.MAX_VALUE)
+                .addGap(93, 93, 93)
                 .addGroup(jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNumbersPicked)
                     .addComponent(lblNumbersPickedDisplay)
@@ -139,7 +146,7 @@ public class Roulette_GameBoard extends javax.swing.JPanel
                     .addComponent(betAmount))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelNumberPickArea, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50))
+                .addContainerGap(50, Short.MAX_VALUE))
             .addGroup(jPanelGameBoardLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -740,6 +747,16 @@ public class Roulette_GameBoard extends javax.swing.JPanel
             return temp;
     }
 
+    /**
+     * Reset the icon of the current number to the default icon. Used after the 
+     * game is played.
+     */
+    public void clearCurrentNumberButton()
+    {
+        btnCurrentNumber.setIcon(btnCurrentNumberDefaultIcon);
+        btnCurrentNumber = null;
+        btnCurrentNumberDefaultIcon = null;
+    }
 
     //*****************Testing this class still*****************
     private class ButtonListener implements MouseListener
@@ -754,10 +771,38 @@ public class Roulette_GameBoard extends javax.swing.JPanel
                     
                     // if the button clicked is not the side line buttons that 
                     // are disabled
-                    if (b.getNumbers() != RouletteButton.LINE_BUTTON_NOT_CLICKABLE)
+                    if (b.getNumbers() != RouletteButton.LINE_BUTTON_NOT_CLICKABLE 
+                            && MainPanel.doesUserHaveMoney())
                     {
                         Roulette.setUserPick(b.getNumbers());
                         lblNumbersPickedDisplay.setText(Roulette.determinePickText());
+                        
+                      
+                        Roulette tmp = (Roulette) MainPanel.getGames()[MainPanel
+                                .getjTabbedPaneGames()
+                                .getSelectedIndex()];
+                        
+                        // sets the userBet when the user clicks a number. Bet is
+                        // set to what ever MainPanel betAmount is.
+                        tmp.setUserBet(MainPanel.getBetAmount());
+                        MainPanel.updateCurrentBet(); // upadtes the mainPanel bet 
+                        
+                        // Makes the button clicked change to the mouseover icon.
+                        // So the choice is easily visable for the user.
+                        if (btnCurrentNumber == null)
+                        {
+                            btnCurrentNumberDefaultIcon = b.getIcon();
+                            btnCurrentNumber = b;
+                            btnCurrentNumber.setIcon(b.getRolloverIcon());
+                        }
+                        else
+                        {
+                            btnCurrentNumber.setIcon(btnCurrentNumberDefaultIcon);
+                            btnCurrentNumberDefaultIcon = b.getIcon();
+                            btnCurrentNumber = b;
+                            btnCurrentNumber.setIcon(b.getRolloverIcon());
+                        }
+
                     }
                 } 
                 catch (Exception error)
