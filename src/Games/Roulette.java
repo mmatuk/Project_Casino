@@ -9,14 +9,11 @@ package Games;
 //
 //******************************************************************************
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.util.Random;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import main.MainPanel;
 
 public class Roulette extends Game
 {
@@ -126,25 +123,67 @@ public class Roulette extends Game
 	/**
 	 * Plays the game.
 	 * 
-	 * @return Returns the results as a string. null if no game was played.
 	 */
-	public String playGame()
+	public void playGame()
 	{
-		if (ready())
-		{		
-                        payout = 0;
-			odds = determineOdds();
-			resultNumber = new Random().nextInt(38);
-
-			String result = getResult(didUserWin()); 
-                        
-                        displayResults();
-                        resetGame();
-
-			return result;
-		}
-		return null;
+            activeGameState = true;
 	}
+        
+        /**
+         * return ture if the game can change. meaning user is not playing a bet.
+         * 
+         * @return ture if game can change
+         */
+        public boolean canGameChange()
+        {
+            int num=0;
+            if (userBet != 0)
+            {
+                num = JOptionPane.showConfirmDialog(
+                        gamePanel, "Would you like to change games?");
+                if (num == JOptionPane.YES_OPTION)
+                {
+                    activeGameState = false;
+                    resetGame();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                activeGameState = false;
+                resetGame();
+                return true;
+            }
+        }
+        
+        /**Plays the roullete game when the spin button is pressed and game 
+         * state is active
+         * 
+         * @return the results log
+         */
+        public String spin()
+        {
+            if (ready())
+            {		
+                    payout = 0;
+                    odds = determineOdds();
+                    resultNumber = new Random().nextInt(38);
+
+                    String result = getResult(didUserWin()); 
+
+                    displayResults();
+                    MainPanel.updateBankBal(payout);
+                    resetGame();
+
+                    log.add(result);
+                    return result;
+            }
+            return null;
+        }
 	
 	/**
 	 * Makes the game panel and sets it to gamPanel.
@@ -348,7 +387,7 @@ public class Roulette extends Game
                 {
                     userWinLose = "LOSE";
                     userWinLoseAmount = String.valueOf(userBet);
-                    payout = 0;
+                    payout -= userBet;
                     
                     result = "lose\t"
                             + "user num: " + userPickedText + "\t"
@@ -472,6 +511,7 @@ public class Roulette extends Game
 		userPick = null;
 		result = null;
                 userBet = 0;
+                payout = 0;
                                 
                 winNum = null;
                 winColor = null;
@@ -480,6 +520,7 @@ public class Roulette extends Game
                 userBetAmount = null;
                 userWinLose = null; 
                 userWinLoseAmount = null;
+                
                 
                 // clears the text for the user picked numbers after the game is played
                 Roulette_GameBoard tempPanel = (Roulette_GameBoard) gamePanel;

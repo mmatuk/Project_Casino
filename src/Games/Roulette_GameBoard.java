@@ -3,6 +3,8 @@ package Games;
 import main.MainPanel;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -89,6 +91,7 @@ public class Roulette_GameBoard extends javax.swing.JPanel
         jLabel2 = new javax.swing.JLabel();
         lblBetAmount = new javax.swing.JLabel();
         betAmount = new javax.swing.JLabel();
+        btnSpin = new javax.swing.JButton();
 
         jPanelGameBoard.setBackground(new java.awt.Color(51, 102, 0));
 
@@ -112,13 +115,27 @@ public class Roulette_GameBoard extends javax.swing.JPanel
         betAmount.setForeground(new java.awt.Color(255, 255, 255));
         betAmount.setText("$0");
 
+        btnSpin.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnSpin.setText("SPIN");
+        btnSpin.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnSpinActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelGameBoardLayout = new javax.swing.GroupLayout(jPanelGameBoard);
         jPanelGameBoard.setLayout(jPanelGameBoardLayout);
         jPanelGameBoardLayout.setHorizontalGroup(
             jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelGameBoardLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelGameBoardLayout.createSequentialGroup()
+                        .addGap(173, 173, 173)
+                        .addComponent(btnSpin)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelGameBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelGameBoardLayout.createSequentialGroup()
@@ -150,7 +167,9 @@ public class Roulette_GameBoard extends javax.swing.JPanel
                         .addComponent(jPanelNumberPickArea, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelGameBoardLayout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSpin)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -165,6 +184,13 @@ public class Roulette_GameBoard extends javax.swing.JPanel
             .addComponent(jPanelGameBoard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSpinActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnSpinActionPerformed
+    {//GEN-HEADEREND:event_btnSpinActionPerformed
+        Roulette game = (Roulette)MainPanel.getGames()[
+                MainPanel.getjTabbedPaneGames().getSelectedIndex()];
+        game.spin();
+    }//GEN-LAST:event_btnSpinActionPerformed
 
     /**
      * Creates a game board by calling each method that will return the proper panel with buttons.
@@ -749,16 +775,21 @@ public class Roulette_GameBoard extends javax.swing.JPanel
     }
 
     /**
-     * Reset the icon of the current number to the default icon. Used after the 
-     * game is played.
+     * Reset the icon of the current number to the default icon. used after
+     * wheel is spun.
      */
     public void clearCurrentNumberButton()
     {
-        btnCurrentNumber.setIcon(btnCurrentNumberDefaultIcon);
-        btnCurrentNumber = null;
-        btnCurrentNumberDefaultIcon = null;
+        if (btnCurrentNumberDefaultIcon != null)
+        {
+            btnCurrentNumber.setIcon(btnCurrentNumberDefaultIcon);
+            btnCurrentNumber = null;
+            btnCurrentNumberDefaultIcon = null;
+        }
     }
 
+    
+    //**********************************************************
     //*****************Testing this class still*****************
     private class ButtonListener implements MouseListener
     {
@@ -772,38 +803,40 @@ public class Roulette_GameBoard extends javax.swing.JPanel
                     
                     // if the button clicked is not the side line buttons that 
                     // are disabled
-                    if (b.getNumbers() != RouletteButton.LINE_BUTTON_NOT_CLICKABLE 
-                            && MainPanel.doesUserHaveMoney())
+                    if (b.isEnabled())
                     {
-                        Roulette.setUserPick(b.getNumbers());
-                        lblNumbersPickedDisplay.setText(Roulette.determinePickText());
-                        
-                      
-                        Roulette tmp = (Roulette) MainPanel.getGames()[MainPanel
-                                .getjTabbedPaneGames()
-                                .getSelectedIndex()];
-                        
-                        // sets the userBet when the user clicks a number. Bet is
-                        // set to what ever MainPanel betAmount is.
-                        tmp.setUserBet(MainPanel.getBetAmount());
-                        MainPanel.updateCurrentBet(); // upadtes the mainPanel bet 
-                        
-                        // Makes the button clicked change to the mouseover icon.
-                        // So the choice is easily visable for the user.
-                        if (btnCurrentNumber == null)
+                        if (b.getNumbers() != RouletteButton.LINE_BUTTON_NOT_CLICKABLE 
+                                && MainPanel.doesUserHaveMoney())
                         {
-                            btnCurrentNumberDefaultIcon = b.getIcon();
-                            btnCurrentNumber = b;
-                            btnCurrentNumber.setIcon(b.getRolloverIcon());
-                        }
-                        else
-                        {
-                            btnCurrentNumber.setIcon(btnCurrentNumberDefaultIcon);
-                            btnCurrentNumberDefaultIcon = b.getIcon();
-                            btnCurrentNumber = b;
-                            btnCurrentNumber.setIcon(b.getRolloverIcon());
-                        }
+                            Roulette.setUserPick(b.getNumbers());
+                            lblNumbersPickedDisplay.setText(Roulette.determinePickText());
 
+
+                            Roulette tmp = (Roulette) MainPanel.getGames()[
+                                    MainPanel.getCurrentGameIndex()];
+
+                            // sets the userBet when the user clicks a number. Bet is
+                            // set to what ever MainPanel betAmount is.
+                            tmp.setUserBet(MainPanel.getBetAmount());
+                            MainPanel.updateCurrentBet(); // upadtes the mainPanel bet 
+
+                            // Makes the button clicked change to the mouseover icon.
+                            // So the choice is easily visable for the user.
+                            if (btnCurrentNumber == null)
+                            {
+                                btnCurrentNumberDefaultIcon = b.getIcon();
+                                btnCurrentNumber = b;
+                                btnCurrentNumber.setIcon(b.getRolloverIcon());
+                            }
+                            else
+                            {
+                                btnCurrentNumber.setIcon(btnCurrentNumberDefaultIcon);
+                                btnCurrentNumberDefaultIcon = b.getIcon();
+                                btnCurrentNumber = b;
+                                btnCurrentNumber.setIcon(b.getRolloverIcon());
+                            }
+
+                        }
                     }
                 } 
                 catch (Exception error)
@@ -875,6 +908,7 @@ public class Roulette_GameBoard extends javax.swing.JPanel
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel betAmount;
+    private javax.swing.JButton btnSpin;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanelGameBoard;
     private javax.swing.JPanel jPanelNumberPickArea;

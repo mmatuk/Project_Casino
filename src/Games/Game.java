@@ -8,7 +8,7 @@ package Games;
 //  1. This class is the abstract class for all games created
 //
 //		-- Any game created must extend this class.
-//
+//              -- Handle all bank account changes in the child class.
 //		** Game board Panel created must be 900x580 in size. **
 //
 //  2. Results Panel
@@ -18,6 +18,7 @@ package Games;
 //******************************************************************************
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -35,6 +36,8 @@ public abstract class Game
 	final protected Dimension PANEL_SIZE;
         protected double maxBet; // for the tables max bet // default: 1000
         protected double minBet;// for the tables min bet // default: 1
+        protected boolean activeGameState;
+        protected ArrayList<String> log;
 
 			
 	/**
@@ -54,16 +57,19 @@ public abstract class Game
 		makeInstructionsPanel();
                 maxBet = 1000;
                 minBet = 1;
+                activeGameState = false;
+                log = new ArrayList<>();
 	}
 	
 	// Methods that need to be used in the child class.
         /**
-         * Plays the game. TReturn null if no game was played
+         * Plays the game. 
          * 
-         * @return returns a results string. Null if no game was played
          */
-	public abstract String playGame();
+	public abstract void playGame();
 	public abstract void resetGame();
+        public abstract boolean canGameChange();
+
 	
 	/**
 	 * Makes a panel that will be used to display the game board of the 
@@ -83,7 +89,7 @@ public abstract class Game
 		gamePanel.setPreferredSize(PANEL_SIZE);
 		return gamePanel;
 	}
-	
+       	
 	/**
 	 * Makes a panel for the results panel for the game. If no panel was created in the
 	 * child class, then an error panel is created. 
@@ -184,6 +190,11 @@ public abstract class Game
         {
             return minBet;
         }
+        
+        public boolean getActiveGameState()
+        {
+            return activeGameState;
+        }
 	
 	public void setGameName(String str)
 	{
@@ -228,6 +239,12 @@ public abstract class Game
         public void setMinBet(double bet)
         {
             minBet = bet;
+        }
+        
+        public boolean setActiveGameState(boolean bool)
+        {
+            activeGameState = bool;
+            return activeGameState;
         }
 	
 	public String toString()

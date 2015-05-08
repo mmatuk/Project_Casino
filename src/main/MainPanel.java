@@ -2,10 +2,21 @@ package main;
 
 
 import Games.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.OverlayLayout;
 
 
 
@@ -42,6 +53,7 @@ public class MainPanel extends javax.swing.JPanel
     private static double betAmount;
         
     private static Game[] games;
+    private static int currentGameIndex;
     
     
     /**
@@ -410,7 +422,9 @@ public class MainPanel extends javax.swing.JPanel
     	// Add new games to this array
     	Game[] temp = 
     		{
-    			new Roulette("Roulette")
+    			new Roulette("Roulette"),
+                        new Roulette("Roulette Test2")
+
     		};
     	
     	games = temp;
@@ -426,6 +440,7 @@ public class MainPanel extends javax.swing.JPanel
     	games = null;
     	bankAccount = 0;
     	betAmount = 0;
+        currentGameIndex = 0;
     }
     
     /**
@@ -436,9 +451,30 @@ public class MainPanel extends javax.swing.JPanel
     {
         for (Game game : games)
         {
-            jTabbedPaneGames.add(game.getGameName(), game.getGamePanel());
-        }
+            JPanel gameOverlay = new JPanel();
+            gameOverlay.setLayout(new OverlayLayout(gameOverlay));
+            
+            // creates a transparent panel of the game to let the user know the 
+            //game is not currently active
+            JPanel gameOverlayPanel = new JPanel();
+            gameOverlayPanel.setLayout(new BorderLayout());
+            gameOverlayPanel.setBackground(new Color(200,200,200, 100));
+            
+            JButton gameOverlayButton = new JButton();
+            gameOverlayButton.setOpaque(false);
+            gameOverlayButton.setEnabled(false);
+            gameOverlayButton.setBorderPainted(false);
+            gameOverlayButton.setContentAreaFilled(false);
+            
+            gameOverlayPanel.add(gameOverlayButton);
+            
+            gameOverlay.add(gameOverlayPanel,0);
+            gameOverlay.add(game.getGamePanel(),1);
+            jTabbedPaneGames.add(game.getGameName(), gameOverlay);
+
+        }   
     }
+    
     
     /**
      * Displays the results panel for each game by adding the panel to the
@@ -446,18 +482,10 @@ public class MainPanel extends javax.swing.JPanel
      */
     private void displayResultsPanel()
     {
-        // if no panel is present.
-        if (jPanelResults.getComponentCount() == 0)
-        {
-            jPanelResults.add(games[
-                    jTabbedPaneGames.getSelectedIndex()].getGameResultsPanel());
-        }
-        else
-        {
-            jPanelResults.removeAll();
-            jPanelResults.add(games[
-                    jTabbedPaneGames.getSelectedIndex()].getGameResultsPanel());
-        }
+        jPanelResults.removeAll();
+        jPanelResults.add(games[currentGameIndex].getGameResultsPanel());
+        jPanelResults.repaint();
+
     }
     /**
      * Displays the current users bet using lblCurrentBet
@@ -483,7 +511,7 @@ public class MainPanel extends javax.swing.JPanel
     /**
      * Displays the users current bank balance
      */
-    private void updateBankBal()
+    public static void updateBankBal()
     {
         DecimalFormat currency = new DecimalFormat("$###,###.##");
         lblBal.setText(currency.format(bankAccount));
@@ -495,7 +523,7 @@ public class MainPanel extends javax.swing.JPanel
      * 
      * @param amount Amount to add to the bank account balance.
      */
-    private void updateBankBal(double amount)
+    public static void updateBankBal(double amount)
     {
         bankAccount += amount;
         DecimalFormat currency = new DecimalFormat("$###,###.##");
@@ -526,10 +554,12 @@ public class MainPanel extends javax.swing.JPanel
         String increaseAmount = (String) JOptionPane.showInputDialog(
                 jTabbedPaneGames, "Please select how much you would like to add", 
                 "ADD Money", JOptionPane.QUESTION_MESSAGE, null, amounts, 50);
-        
-        increaseAmount = increaseAmount.replaceAll("[$,]", "");
+        if (increaseAmount != null)
+        {
+            increaseAmount = increaseAmount.replaceAll("[$,]", "");
 
-        updateBankBal(Double.parseDouble(increaseAmount));
+            updateBankBal(Double.parseDouble(increaseAmount));
+        }
     }//GEN-LAST:event_btnAddMoneyActionPerformed
 
     private void btnBet1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBet1ActionPerformed
@@ -553,16 +583,11 @@ public class MainPanel extends javax.swing.JPanel
      */
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnPlayActionPerformed
     {//GEN-HEADEREND:event_btnPlayActionPerformed
-        double preBetAmount = 
-                games[jTabbedPaneGames.getSelectedIndex()].getUserBet();
-        String wasGamePlayed = games[jTabbedPaneGames.getSelectedIndex()].playGame();
-        
-        // if the game was played. null means no game played
-        if (wasGamePlayed != null)
-        {
-            updateBankBal(-preBetAmount);
-            updateBankBal(games[jTabbedPaneGames.getSelectedIndex()].getPayout());
-        }
+
+        btnPlay.setEnabled(false);
+        JPanel tmp = (JPanel) jTabbedPaneGames.getSelectedComponent();
+        tmp.getComponent(0).setVisible(false); // turns off the overlay so the game become active
+        games[currentGameIndex].playGame();
     }//GEN-LAST:event_btnPlayActionPerformed
 
     private void btnBet5ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBet5ActionPerformed
@@ -656,7 +681,36 @@ public class MainPanel extends javax.swing.JPanel
      */
     private void jTabbedPaneGamesStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_jTabbedPaneGamesStateChanged
     {//GEN-HEADEREND:event_jTabbedPaneGamesStateChanged
-        displayResultsPanel();
+        
+        int nextGame = jTabbedPaneGames.getSelectedIndex(); // stores next game
+        
+        // Makes sure the setSelectedIndex does not cause recursion when it is 
+        // changed twich in the following cod.
+        if(nextGame == currentGameIndex) 
+        {
+            return;
+        }
+        jTabbedPaneGames.setSelectedIndex(currentGameIndex);
+
+        // if there is no active game.
+        if (!games[currentGameIndex].getActiveGameState())
+        {
+            currentGameIndex = nextGame;  
+            displayResultsPanel();
+        }
+        else if (games[currentGameIndex].canGameChange())
+        {
+            JPanel tmp = (JPanel) jTabbedPaneGames.getComponent(currentGameIndex);
+            tmp.getComponent(0).setVisible(true);
+            
+            btnPlay.setEnabled(true);
+            currentGameIndex = nextGame;
+
+            displayResultsPanel();
+
+        }
+        System.out.println("test");
+        jTabbedPaneGames.setSelectedIndex(currentGameIndex);
     }//GEN-LAST:event_jTabbedPaneGamesStateChanged
 
     /**
@@ -667,7 +721,9 @@ public class MainPanel extends javax.swing.JPanel
     private void btnBetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBetActionPerformed
     {//GEN-HEADEREND:event_btnBetActionPerformed
 
-        if (doesUserHaveMoney())
+        // only bets if there is an active game
+        if (doesUserHaveMoney() 
+                && games[currentGameIndex].getActiveGameState())
         {
             if (betAmount == 0)
             {
@@ -676,7 +732,7 @@ public class MainPanel extends javax.swing.JPanel
             }
             else
             {
-                games[jTabbedPaneGames.getSelectedIndex()].setUserBet(betAmount);
+                games[currentGameIndex].setUserBet(betAmount);
                 updateCurrentBet();
             }
         }
@@ -717,6 +773,28 @@ public class MainPanel extends javax.swing.JPanel
         return games;
     }
 
+    public static JButton getBtnPlay()
+    {
+        return btnPlay;
+    }
+
+    public static void setBtnPlay(JButton btnPlay)
+    {
+        MainPanel.btnPlay = btnPlay;
+    }
+
+    public static int getCurrentGameIndex()
+    {
+        return currentGameIndex;
+    }
+
+    public static void setCurrentGameIndex(int currentGameIndex)
+    {
+        MainPanel.currentGameIndex = currentGameIndex;
+    }
+
+    
+    
     
     
 
@@ -730,7 +808,7 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JButton btnBet25;
     private javax.swing.JButton btnBet5;
     private javax.swing.JButton btnBet50;
-    private javax.swing.JButton btnPlay;
+    private static javax.swing.JButton btnPlay;
     private javax.swing.JComboBox comboRasieLow;
     private javax.swing.JButton jButton1;
     private javax.swing.JFormattedTextField jFormattedTextFieldBetAmount;
@@ -741,7 +819,7 @@ public class MainPanel extends javax.swing.JPanel
     private javax.swing.JSeparator jSeparator2;
     private static javax.swing.JTabbedPane jTabbedPaneGames;
     private javax.swing.JLabel lblAmountBet;
-    private javax.swing.JLabel lblBal;
+    private static javax.swing.JLabel lblBal;
     private javax.swing.JLabel lblBankBal;
     private static javax.swing.JLabel lblCurrentBet;
     private javax.swing.JLabel lblSetBet;

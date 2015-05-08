@@ -3,12 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="Net Beans Projects">
-            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/Roulette_Results.java</file>
-            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/MainPanel.java</file>
-            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/Start.java</file>
-            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/Game.java</file>
-            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/Roulette_GameBoard.java</file>
-            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/Roulette.java</file>
+            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/Games/Game.java</file>
+            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/Games/Roulette.java</file>
+            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/Games/Roulette_GameBoard.java</file>
+            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/main/Start.java</file>
+            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/main/Casino.java</file>
+            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/main/MainPanel.java</file>
+            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/main/LoginPanel.java</file>
+            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/Games/RouletteButton.java</file>
+            <file>file:/C:/Users/Matt/Desktop/Java%20Projects/Net%20Beans%20Projects/Project_Casino/src/Games/Roulette_Results.java</file>
         </group>
     </open-files>
 </project-private>
