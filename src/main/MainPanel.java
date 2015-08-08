@@ -4,15 +4,13 @@ package main;
 import Games.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import javax.swing.BoxLayout;
+import java.util.ArrayList;
+import javafx.scene.media.MediaPlayer;
+import javax.sound.sampled.AudioInputStream;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -55,6 +53,10 @@ public class MainPanel extends javax.swing.JPanel
     private static Game[] games;
     private static int currentGameIndex;
     
+    private MediaPlayer backgroundMusic;
+    private ArrayList<URL> strTracksList;
+    private AudioInputStream clip1;
+    
     
     /**
      * Creates new form MainPanel
@@ -71,6 +73,7 @@ public class MainPanel extends javax.swing.JPanel
         updateBankBal();
         
         displayResultsPanel();
+       //loadMusic();
         
     }
 
@@ -423,7 +426,6 @@ public class MainPanel extends javax.swing.JPanel
     	Game[] temp = 
     		{
     			new Roulette("Roulette"),
-                        new Roulette("Roulette Test2")
 
     		};
     	
@@ -441,7 +443,60 @@ public class MainPanel extends javax.swing.JPanel
     	bankAccount = 0;
     	betAmount = 0;
         currentGameIndex = 0;
+        strTracksList = new ArrayList<>();
+        clip1 = null;
+        
+        
     }
+    /*
+    private void loadMusic()
+    {
+        try
+        {
+
+            
+            strTracksList.add(getClass().getResource("/res/raw/slot2.wav"));
+
+            strTracksList.add(getClass().getResource("/res/raw/Casino4.wav"));
+            strTracksList.add(getClass().getResource("/res/raw/Casino4.wav"));
+
+            strTracksList.add(getClass().getResource("/res/raw/slot2.wav"));
+            strTracksList.add(getClass().getResource("/res/raw/slot_machine_beep_buzz.wav"));
+            
+            for (URL track : strTracksList)
+            {
+                if (clip1 == null)
+                {
+                    clip1 = AudioSystem.getAudioInputStream((track));
+                    
+                }
+                else
+                {
+                    AudioInputStream clip2 = AudioSystem.getAudioInputStream((track));
+                    AudioInputStream appendedFiles = new AudioInputStream(
+                        new SequenceInputStream(clip1, clip2), 
+                        clip1.getFormat(), 
+                        clip1.getFrameLength() + clip2.getFrameLength());
+                    clip1 = appendedFiles;
+                }
+
+            }
+            AudioSystem.write(clip1, AudioFileFormat.Type.WAVE, new File("src/res/raw/casino.wav"));
+            AudioInputStream tmp = AudioSystem.getAudioInputStream(strTracksList.get(1));
+            AudioInputStream tmp2 = AudioSystem.getAudioInputStream(strTracksList.get(4));
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(tmp);
+            clip.start();
+            clip.
+            clip.open(tmp2);
+            clip.start();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }*/
     
     /**
      * Sets up all the game boards by using the games array to get each created 

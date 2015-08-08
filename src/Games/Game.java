@@ -1,5 +1,3 @@
-package Games;
-
 //******************************************************************************
 //  Game.java                        		     Project Casino
 //  Author: Matt Matuk                           Created: March 30, 2015                         
@@ -16,6 +14,8 @@ package Games;
 //      -- size 1272,70
 //
 //******************************************************************************
+
+package Games;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
