@@ -3,9 +3,9 @@ package Games;
 //******************************************************************************
 //  Roulette.java                      		       Project Casino
 //  Author: Matt Matuk                             Created: March 30, 2015                         
-//  Team: Team 2
-//
 //  
+//  Creates a game board for the user to play Roulette with. Intergrated with the
+//  main GUI application. 
 //
 //******************************************************************************
 
